@@ -1,0 +1,76 @@
+real BC = 0.;
+
+real rs = 2;
+real rw = 1;
+real epsilon=8.85418782e-12;
+
+real Cexact=2*pi*epsilon/(log(rs/rw));
+
+border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
+border circleWire(t=0,2*pi){x=rw*cos(t);y=rw*sin(t);label=1;};
+int m=20;
+mesh Th;
+Th=buildmesh(circleShield(5*m)+circleWire(-5*m));
+plot(Th,wait=1);
+
+
+// Crete function space
+fespace Vh(Th,P1);
+
+Vh phi, phi0, v, v0;
+
+// Define  Poisson problem
+problem Poisson1(phi0,v) = int2d(Th)(dx(phi0)*(dx(v))+dy(phi0)*(dy(v)))
+	+on(0,phi0=1.-BC)+on(1,phi0=BC);
+
+Poisson1;
+// phi0=phi;
+
+// BC=1.;
+// Poisson1;
+
+problem Poisson2(phi,v) = int2d(Th)(dx(phi)*(dx(v))+dy(phi)*(dy(v)))
+	+on(0,phi=0.)+on(1,phi=1.);
+
+Poisson2;
+
+real[int,int] M(2,2);
+
+M(0,0)=int1d(Th,0)(-dx(phi0)*N.x-dy(phi0)*N.y);
+M(0,1)=int1d(Th,0)(-dx(phi)*N.x-dy(phi)*N.y);
+M(1,0)=int1d(Th,1)(-dx(phi0)*N.x-dy(phi0)*N.y);
+M(1,1)=int1d(Th,1)(-dx(phi)*N.x-dy(phi)*N.y);
+
+//real capproch = (M(0,0)+M(0,1))*(M(0,0)+M(1,0))/;
+
+cout<< M(0,0) <<"\n";
+cout<< M(0,1) <<"\n";
+cout<< M(1,0) <<"\n";
+cout<< M(1,1) <<"\n";
+cout<< M <<"\n";
+
+
+// plot(phi0,wait=1,value=true);
+// plot(phi,wait=1,value=true);
+// cout<< phi0[].min <<endl;
+// cout<< phi[].min <<endl;
+
+
+
+
+
+
+
+//+int1d(Th,2)(v);
+
+
+// bool debug = true;
+// border a(t=0,2*pi){ x=cos(t); y=sin(t);label=1;}
+// border b(t=0,2*pi){ x=0.8+0.3*cos(t); y=0.3*sin(t);label=2;}
+// plot(a(50)+b(-30),wait=debug); // plot the borders to see the intersection
+// //(so change (0.8 in 0.3 in b) then needs a mouse click
+// mesh Th = buildmesh(a(50)+b(-30));
+// plot(Th,wait=debug);  //plot Th then needs a mouse click
+// fespace Vh(Th,P2);
+// Vh f = sin(pi*x)* cos(pi*y);
+// plot(f,wait=debug);
