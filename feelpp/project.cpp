@@ -48,14 +48,15 @@ int main( int argc, char** argv )
 
     auto phi = Xh->element();
     auto v = Xh->element();
+    auto psi =Xh->element();
     auto f = cst(0.);
+    auto e = exporter( _mesh=mesh );
 
     int nwires = ioption("nwires");
 
     // Loop on wires (0 == shield).
     for( int i=0; i<nwires; i++)
     {
-        auto e = exporter( _mesh=mesh, "seme2014" );
         auto a = form2( _test=Xh, _trial=Xh);
         auto l = form1( _test=Xh );
 
@@ -76,9 +77,16 @@ int main( int argc, char** argv )
 
         a.solve( _rhs=l, _solution=phi );
 
+        auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "wire-%1%" ) % i ).str() ), cst(1));
+        auto bound=integrate( _range=elements( mesh ),
+                              _expr=gradv(phi)*trans(gradv(o1)) ).evaluate()(0,0);
+
+        //std::cout << bound[0];
+
         e->add( ( boost::format( "phi%1%" ) % i ).str(), phi );
-        e->save();
+        e->add( ( boost::format( "proj%1%" ) % i ).str(), o1 );
     }
+    e->save();
 
     return 0;
 }
