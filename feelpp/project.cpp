@@ -26,12 +26,6 @@
    \date 2014-01-21
  */
 
-//#include <feel/feelfilters/exporter.hpp>
-//#include <feel/feeldiscr/pch.hpp>
-//#include <feel/feelfilters/loadmesh.hpp>
-//#include <feel/feelvf/form.hpp>
-//#include <feel/feelvf/integrator.hpp>
-//#include <feel/feelvf/trans.hpp>
 #include <feel/feel.hpp>
 
 #define DIM 2
@@ -41,44 +35,48 @@ using namespace Feel::vf;
 
 int main( int argc, char** argv )
 {
-    Feel::Environment env( _argc=argc, _argv=argv );
+    po::options_description myopts( "MyApp options" );
+    myopts.add_options()
+        ( "nwires", po::value<int>() -> default_value(2), "number of wires in the shield" );
+
+    Feel::Environment env( _argc=argc, _argv=argv,
+                           _desc=myopts);
 
     typedef Mesh< Simplex<DIM> > mesh_type;
     auto mesh = loadMesh( _mesh=new mesh_type );
     auto Xh = Pch<1>( mesh );
 
-    auto u = Xh->element();
+    auto phi = Xh->element();
     auto v = Xh->element();
     auto e = exporter( _mesh=mesh );
+    auto f = cst(0.);
 
-    for( int id=0; id<2; id++)
+    int nwires = ioption("nwires");
+
+    // Loop on wires (0 == shield).
+    for( int i=0; i<nwires; i++)
     {
         auto a = form2( _test=Xh, _trial=Xh);
         auto l = form1( _test=Xh );
 
-        // Dirichlet boundary condition
         a = integrate( _range=elements( mesh ),
-                       _expr= gradt(u)*trans(grad(v)) );
+                       _expr= gradt(phi)*trans(grad(v)) );
 
         l = integrate( _range=elements( mesh ),
-                       _expr= constant(0.) );
+                       _expr=f*id(v) );
 
-        // Boundary condition (strongly imposed)
-        a += on( _range=markedfaces( mesh, "shield" ),
-                 _rhs=l,
-                 _element=u,
-                 _expr=constant(1-id) );
+        // Dirichlet boundary condition (strongly imposed)
+        for(int j=0; j<nwires; j++)
+        {
+            a += on( _range=markedfaces( mesh, ( boost::format( "wire-%1%" ) % j ).str() ),
+                     _rhs=l,
+                     _element=phi,
+                     _expr=chi(i==j) );
+        }
 
-        a += on( _range=markedfaces( mesh, "wired" ),
-                 _rhs=l,
-                 _element=u,
-                 _expr=constant(id) );
+        a.solve( _rhs=l, _solution=phi );
 
-        a.solve( _rhs=l, _solution=u );
-
-        e->step(0)->setMesh(mesh);
-        e->step(0)->addRegions();
-        e->step(0)->add( ( boost::format( "u%1%" ) % id ).str(), u );
+        e->add( ( boost::format( "phi%1%" ) % i ).str(), phi );
         e->save();
     }
 
