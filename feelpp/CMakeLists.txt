@@ -7,8 +7,9 @@ else()
 endif()
 find_package(Feel++)
 
-feelpp_add_application( project_seme2014_axessim
-                        SRCS project.cpp
-                        CFG project.cfg
+feelpp_add_application( multiwires
+                        SRCS multiwires.cpp
+                        CFG multiwires.cfg
                         GEO cwires.geo
+                        LABELS seme2014
                         INCLUDE_IN_ALL )

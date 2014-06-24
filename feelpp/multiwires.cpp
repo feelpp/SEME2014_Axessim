@@ -28,6 +28,12 @@
 
 #include <feel/feel.hpp>
 
+//#include <feel/feelfilters/loadmesh.hpp>
+//#include <feel/feeldiscr/pch.hpp>
+//#include <feel/feelvf/form.hpp>
+//#include <feel/feelvf/integrator.hpp>
+//#include <feel/feelfilters/exporter.hpp>
+
 #define DIM 2
 
 using namespace Feel;
@@ -40,7 +46,10 @@ int main( int argc, char** argv )
         ( "nwires", po::value<int>() -> default_value(2), "number of wires" );
 
     Feel::Environment env( _argc=argc, _argv=argv,
-                           _desc=myopts);
+                           _desc=myopts,
+                           _about=about( _name="multiwires",
+                                         _author="Guillaume Dolle",
+                                         _email="gdolle@math.unistra.fr") );
 
     typedef Mesh< Simplex<DIM> > mesh_type;
     auto mesh = loadMesh( _mesh=new mesh_type );
@@ -50,7 +59,7 @@ int main( int argc, char** argv )
     auto v = Xh->element();
     auto psi =Xh->element();
     auto f = cst(0.);
-    auto e = exporter( _mesh=mesh );
+       auto e = exporter( _mesh=mesh );
 
     int nwires = ioption("nwires");
 
@@ -77,10 +86,9 @@ int main( int argc, char** argv )
 
         a.solve( _rhs=l, _solution=phi );
 
-        auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "wire-%1%" ) % i ).str() ), cst(1));
+        auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "wire-%1%" ) % i ).str() ), cst(1.));
         auto bound=integrate( _range=elements( mesh ),
                               _expr=gradv(phi)*trans(gradv(o1)) ).evaluate()(0,0);
-
         //std::cout << bound[0];
 
         e->add( ( boost::format( "phi%1%" ) % i ).str(), phi );
