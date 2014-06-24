@@ -1,76 +1,80 @@
-real BC = 0.;
-
 real rs = 2;
-real rw = 1;
+real rw = 0.1;
+real ri= 0.5;
 real epsilon=8.85418782e-12;
+
+int NWIRES=6;
 
 real Cexact=2*pi*epsilon/(log(rs/rw));
 
+// Main wire (blindage) of radius rs
 border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
-border circleWire(t=0,2*pi){x=rw*cos(t);y=rw*sin(t);label=1;};
-int m=20;
+
+real[int] X(6),Y(6);
+for (int k=0;k<NWIRES;k++) {
+  X(k)=cos(k*pi/3);
+  Y(k)=sin(k*pi/3);
+ }
+
+border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=7;}; 
+
+// wire 1 cetered at (-1,0) radius rw
+border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;}; 
+border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;}; 
+border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;}; 
+border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;}; 
+border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;}; 
+border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;}; 
+
+int m=5;
 mesh Th;
-Th=buildmesh(circleShield(5*m)+circleWire(-5*m));
+Th=buildmesh(circleShield(10*m)
+	     +circleWire1(-5*m)
+	     +circleWire2(-5*m)
+	     +circleWire3(-5*m)
+	     +circleWire4(-5*m)
+	     +circleWire5(-5*m)
+	     +circleWire6(-5*m)
+	     +circleWireInt(-5*m));
 plot(Th,wait=1);
 
-
-// Crete function space
+// Create function space
 fespace Vh(Th,P1);
+Vh PHI,v;
+Vh[int] phi(NWIRES);
 
-Vh phi, phi0, v, v0;
+real[int] BcWire(NWIRES+1);
+for (int k=0;k<NWIRES;k++){
+  BcWire=0;
+  BcWire(k+1)=1;
+  problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+    +on(0,PHI=BcWire(0))
+    +on(1,PHI=BcWire(1))
+    +on(2,PHI=BcWire(2))
+    +on(3,PHI=BcWire(3))
+    +on(4,PHI=BcWire(4))
+    +on(5,PHI=BcWire(5))
+    +on(6,PHI=BcWire(6));
+  Poisson;
+  phi[k]=PHI;
+  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+ }
 
-// Define  Poisson problem
-problem Poisson1(phi0,v) = int2d(Th)(dx(phi0)*(dx(v))+dy(phi0)*(dy(v)))
-	+on(0,phi0=1.-BC)+on(1,phi0=BC);
+real[int,int] M(NWIRES+1,NWIRES+1);
+M=0.;
 
-Poisson1;
-// phi0=phi;
+for (int k=1;k<NWIRES;k++) {
+  for (int j=0;j<NWIRES;k++) {
+    M(k,j)=int1d(Th,k)(-dx(phi[j])*N.x-dy(phi[j])*N.y);    
+  }
+ }
 
-// BC=1.;
-// Poisson1;
-
-problem Poisson2(phi,v) = int2d(Th)(dx(phi)*(dx(v))+dy(phi)*(dy(v)))
-	+on(0,phi=0.)+on(1,phi=1.);
-
-Poisson2;
-
-real[int,int] M(2,2);
-
-M(0,0)=int1d(Th,0)(-dx(phi0)*N.x-dy(phi0)*N.y);
-M(0,1)=int1d(Th,0)(-dx(phi)*N.x-dy(phi)*N.y);
-M(1,0)=int1d(Th,1)(-dx(phi0)*N.x-dy(phi0)*N.y);
-M(1,1)=int1d(Th,1)(-dx(phi)*N.x-dy(phi)*N.y);
-
-//real capproch = (M(0,0)+M(0,1))*(M(0,0)+M(1,0))/;
-
-cout<< M(0,0) <<"\n";
-cout<< M(0,1) <<"\n";
-cout<< M(1,0) <<"\n";
-cout<< M(1,1) <<"\n";
-cout<< M <<"\n";
+real[int,int] MM=M(1:NWIRES,1:NWIRES);
+cout << M << endl;
+cout << MM << endl;
 
 
 // plot(phi0,wait=1,value=true);
 // plot(phi,wait=1,value=true);
 // cout<< phi0[].min <<endl;
 // cout<< phi[].min <<endl;
-
-
-
-
-
-
-
-//+int1d(Th,2)(v);
-
-
-// bool debug = true;
-// border a(t=0,2*pi){ x=cos(t); y=sin(t);label=1;}
-// border b(t=0,2*pi){ x=0.8+0.3*cos(t); y=0.3*sin(t);label=2;}
-// plot(a(50)+b(-30),wait=debug); // plot the borders to see the intersection
-// //(so change (0.8 in 0.3 in b) then needs a mouse click
-// mesh Th = buildmesh(a(50)+b(-30));
-// plot(Th,wait=debug);  //plot Th then needs a mouse click
-// fespace Vh(Th,P2);
-// Vh f = sin(pi*x)* cos(pi*y);
-// plot(f,wait=debug);
