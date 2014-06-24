@@ -7,7 +7,8 @@ else()
 endif()
 find_package(Feel++)
 
-feelpp_add_application( runWireSolver
+feelpp_add_application( project_seme2014_axessim
                         SRCS project.cpp
                         CFG project.cfg
+                        GEO cwires.geo
                         INCLUDE_IN_ALL )
