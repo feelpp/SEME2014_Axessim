@@ -10,6 +10,6 @@ find_package(Feel++)
 feelpp_add_application( multiwires
                         SRCS multiwires.cpp
                         CFG multiwires.cfg
-                        GEO cwires.geo
+                        GEO ../geo/cwires.geo
                         LABELS seme2014
                         INCLUDE_IN_ALL )

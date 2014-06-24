@@ -89,7 +89,7 @@ int main( int argc, char** argv )
         auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "wire-%1%" ) % i ).str() ), cst(1.));
         auto bound=integrate( _range=elements( mesh ),
                               _expr=gradv(phi)*trans(gradv(o1)) ).evaluate()(0,0);
-        //std::cout << bound[0];
+        std::cout << bound;
 
         e->add( ( boost::format( "phi%1%" ) % i ).str(), phi );
         e->add( ( boost::format( "proj%1%" ) % i ).str(), o1 );
