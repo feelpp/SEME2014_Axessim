@@ -14,10 +14,20 @@
 %-------------------------------------------------------------------------------
 \begin{frame}{Theory}
   \begin{block}{test}
-    \begin{itemize}
-      \item test1
-      \item test2
-    \end{itemize}
+      \begin{tikzpicture}
+          \draw  (0,0) node (v1) {} ellipse (3 and 3);
+          \draw  (0,0) ellipse (1 and 1);
+          \draw [-latex](1,0) -- (1.5,0);
+          \draw [-latex](3,0) -- (2.5,0);
+          \draw (0,0) -- (-2.3611,1.8752);
+          \draw (0,0) -- (0,1);
+          \node at (-1,-1) {$w_0$};
+          \node at (-3,-2) {$w_1$};
+          \node at (-1.6,1) {$r_s$};
+          \node at (0.5,0.4) {$r_w$};
+          \node at (1.5,0.4) {$N_1$};
+          \node at (2.5,0.4) {$N_0$};
+      \end{tikzpicture}
   \end{block}
 \end{frame}
 %-------------------------------------------------------------------------------

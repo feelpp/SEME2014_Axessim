@@ -37,7 +37,7 @@ int main( int argc, char** argv )
 {
     po::options_description myopts( "MyApp options" );
     myopts.add_options()
-        ( "nwires", po::value<int>() -> default_value(2), "number of wires in the shield" );
+        ( "nwires", po::value<int>() -> default_value(2), "number of wires" );
 
     Feel::Environment env( _argc=argc, _argv=argv,
                            _desc=myopts);
@@ -48,7 +48,6 @@ int main( int argc, char** argv )
 
     auto phi = Xh->element();
     auto v = Xh->element();
-    auto e = exporter( _mesh=mesh );
     auto f = cst(0.);
 
     int nwires = ioption("nwires");
@@ -56,6 +55,7 @@ int main( int argc, char** argv )
     // Loop on wires (0 == shield).
     for( int i=0; i<nwires; i++)
     {
+        auto e = exporter( _mesh=mesh, "seme2014" );
         auto a = form2( _test=Xh, _trial=Xh);
         auto l = form1( _test=Xh );
 
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
         l = integrate( _range=elements( mesh ),
                        _expr=f*id(v) );
 
-        // Dirichlet boundary condition (strongly imposed)
+        // Dirichlet boundary condition (strongly imposed on each boundary !!!)
         for(int j=0; j<nwires; j++)
         {
             a += on( _range=markedfaces( mesh, ( boost::format( "wire-%1%" ) % j ).str() ),
