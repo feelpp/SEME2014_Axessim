@@ -1,12 +1,12 @@
+load "lapack"
+load "fflapack"
+
 // SHIELD
 real rs = 2;
-
 // WIRE 1
 real rw1 = 0.2;
-
 //WIRE 2
 real rw2=0.8;
-
 //WIRE 3 and 4
 real rw34=0.2;
 real epsilon=8.85418782e-12;
@@ -32,7 +32,7 @@ border circleWire3(t=0,2*pi){x=X(2)+rw34*cos(t);y=Y(2)+rw34*sin(t);label=3;};
 X(3)=1;Y(3)=-0.4;
 border circleWire4(t=0,2*pi){x=X(3)+rw34*cos(t);y=Y(3)+rw34*sin(t);label=4;}; 
 
-int m=10;
+int m=5;
 mesh Th0,Th1;
 Th0=buildmesh(
 	      circleShield(10*m)
@@ -66,32 +66,46 @@ problem Poisson(PHIlow,vlow) = int2d(Th1)(dx(PHIlow)*(dx(vlow))+dy(PHIlow)*(dy(v
   + on(4,PHIlow=bC(2));
 Poisson;
 philow[0]=PHIlow;
-plot(PHIlow,fill=1,dim=3,wait=1,value=1);
+//plot(PHIlow,fill=1,dim=3,wait=1,value=1);
 
 // Resolution de PHI 2
 bC=[0.,0.,1.];
 Poisson;
 philow[1]=PHIlow;
-plot(PHIlow,dim=3,wait=1,value=1);
+//plot(PHIlow,dim=3,wait=1,value=1);
 
 real[int,int] M1(2,2);
+M1=0.;
+
+func psi1 = ((x-X(2))^2+(y-Y(2))^2 <= rw34^2)
+  +((x-X(2))^2+(y-Y(2))^2 > rw34^2)
+  *( exp( - 10^8* ( sqrt((x-X(2))^2+(y-Y(2))^2) - rw34  )^8  ) );
+
+func psi2 = ((x-X(3))^2+(y-Y(3))^2 <= rw34^2)
+  +((x-X(3))^2+(y-Y(3))^2 > rw34^2)
+  *( exp( - 10^8* ( sqrt((x-X(3))^2+(y-Y(3))^2) - rw34  )^8  ) );
+
 
 func f3=((x-X(2))^2+(y-Y(2))^2 <= rw34^2);
 func f4=((x-X(3))^2+(y-Y(3))^2 <= rw34^2);
 
 Vh1[int] pf(2);
-pf[0]=f3; pf[1]=f4;
+pf[0]=psi1; pf[1]=psi2;
+//pf[0]=f3; pf[1]=f4;
 
 plot(pf[0],dim=3,value=1,fill=1,wait=1);
 plot(pf[1],dim=3,value=1,fill=1,wait=1);
 
-for (int i=0;i<2;i++){
-for (int j=0;j<2;j++){
+for (int i=0;i<2;++i){
+for (int j=0;j<2;++j){
   M1(i,j)=int2d(Th1)(dx(philow[i])*dx(pf[j])+dy(philow[i])*dy(pf[j]));
  }
 }
-
 cout << "Matrice M1" << M1 << endl;
+real[int,int] Lint(2,2);
+Lint = inv(M1);
+
+cout << "Matrice Lint" << Lint << endl;
 
 
 // ETAPE 2
