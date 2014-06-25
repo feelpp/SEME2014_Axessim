@@ -1,0 +1,138 @@
+// SHIELD
+real rs = 2;
+
+// WIRE 1
+real rw1 = 0.2;
+
+//WIRE 2
+real rw2=0.8;
+
+//WIRE 3 and 4
+real rw34=0.2;
+real epsilon=8.85418782e-12;
+
+// Main wire (blindage) of radius rs
+border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
+
+real[int] X(4),Y(4);
+
+// WIRE VIDE W1
+X(0)=-1;Y(0)=0.;
+border circleWire1(t=0,2*pi){x=X(0)+rw1*cos(t);y=Y(0)+rw1*sin(t);label=1;}; 
+
+//WIRE W2
+X(1)=1;Y(0)=0;
+border circleWire2(t=0,2*pi){x=X(1)+rw2*cos(t);y=Y(1)+rw2*sin(t);label=2;}; 
+
+//WIRE 3
+X(2)=1;Y(2)=0.4;
+border circleWire3(t=0,2*pi){x=X(2)+rw34*cos(t);y=Y(2)+rw34*sin(t);label=3;}; 
+
+//WIRE 4
+X(3)=1;Y(3)=-0.4;
+border circleWire4(t=0,2*pi){x=X(3)+rw34*cos(t);y=Y(3)+rw34*sin(t);label=4;}; 
+
+int m=10;
+mesh Th0,Th1;
+Th0=buildmesh(
+	      circleShield(10*m)
+	     +circleWire1(-5*m)
+	     +circleWire2(-5*m));
+
+Th1=buildmesh(
+	      circleWire2(5*m)
+	      +circleWire3(-5*m)
+	      +circleWire4(-5*m));
+//plot(Th0,wait=1);
+//plot(Th1,wait=1);
+
+// Create function space
+fespace Vh0(Th0,P1);
+fespace Vh1(Th1,P1);
+
+// ETAPE 1
+Vh1 PHIlow,vlow;
+Vh1[int] philow(2);
+real[int] bC(3); 
+// 0 -> label 2
+// 1 -> label 3
+// 2 -> label 4
+
+// Resoudre PHI 1 sur W1
+bC=[0.,1.,0.];
+problem Poisson(PHIlow,vlow) = int2d(Th1)(dx(PHIlow)*(dx(vlow))+dy(PHIlow)*(dy(vlow))) 
+  + on(2,PHIlow=bC(0))
+  + on(3,PHIlow=bC(1))
+  + on(4,PHIlow=bC(2));
+Poisson;
+philow[0]=PHIlow;
+plot(PHIlow,fill=1,dim=3,wait=1,value=1);
+
+// Resolution de PHI 2
+bC=[0.,0.,1.];
+Poisson;
+philow[1]=PHIlow;
+plot(PHIlow,dim=3,wait=1,value=1);
+
+real[int,int] M1(2,2);
+
+func f3=((x-X(2))^2+(y-Y(2))^2 <= rw34^2);
+func f4=((x-X(3))^2+(y-Y(3))^2 <= rw34^2);
+
+Vh1[int] pf(2);
+pf[0]=f3; pf[1]=f4;
+
+plot(pf[0],dim=3,value=1,fill=1,wait=1);
+plot(pf[1],dim=3,value=1,fill=1,wait=1);
+
+for (int i=0;i<2;i++){
+for (int j=0;j<2;j++){
+  M1(i,j)=int2d(Th1)(dx(philow[i])*dx(pf[j])+dy(philow[i])*dy(pf[j]));
+ }
+}
+
+cout << "Matrice M1" << M1 << endl;
+
+
+// ETAPE 2
+Vh0 PHIup,vup;
+Vh0[int] phiup(3);
+
+
+
+
+// real[int] BcWire(NWIRES+1);
+// for (int k=0;k<NWIRES;k++){
+//   BcWire=0;
+//   BcWire(k+1)=1;
+//   problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+//     +on(0,PHI=BcWire(0))
+//     +on(1,PHI=BcWire(1))
+//     +on(2,PHI=BcWire(2))
+//     +on(3,PHI=BcWire(3))
+//     +on(4,PHI=BcWire(4))
+//     +on(5,PHI=BcWire(5))
+//     +on(6,PHI=BcWire(6));
+//   Poisson;
+//   phi[k]=PHI;
+//   plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+//  }
+
+// real[int,int] M(NWIRES+1,NWIRES+1);
+// M=0.;
+
+// for (int k=1;k<NWIRES;k++) {
+//   for (int j=0;j<NWIRES;k++) {
+//     M(k,j)=int1d(Th,k)(dx(phi[j])*N.xdy(phi[j])*N.y);    
+//   }
+//  }
+
+// real[int,int] MM=M(1:NWIRES,1:NWIRES);
+// cout << M << endl;
+// cout << MM << endl;
+
+
+// plot(phi0,wait=1,value=true);
+// plot(phi,wait=1,value=true);
+// cout<< phi0[].min <<endl;
+// cout<< phi[].min <<endl;
