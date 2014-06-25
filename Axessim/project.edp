@@ -28,6 +28,8 @@ border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;};
 
 int m=5;
 mesh Th;
+// mesh=read("mesh.msh");
+
 Th=buildmesh(circleShield(10*m)
 	     +circleWire1(-5*m)
 	     +circleWire2(-5*m)
@@ -44,6 +46,7 @@ Vh PHI,v;
 Vh[int] phi(NWIRES);
 
 real[int] BcWire(NWIRES+1);
+
 for (int k=0;k<NWIRES;k++){
   BcWire=0;
   BcWire(k+1)=1;
