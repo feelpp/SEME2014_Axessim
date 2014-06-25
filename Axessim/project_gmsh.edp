@@ -1,0 +1,61 @@
+load "gmsh"
+
+real rs = 2;
+real rw = 0.1;
+real ri= 0.5;
+real epsilon=8.85418782e-12;
+
+int NWIRES=2;
+
+real Cexact=2*pi*epsilon/(log(rs/rw));
+
+real[int] X(NWIRES),Y(NWIRES);
+for (int k=0;k<NWIRES;k++) {
+  X(k)=cos(k*pi/3);
+  Y(k)=sin(k*pi/3);
+}
+
+int m=5;
+
+//mesh M = read(gmsh,"wires.msh");
+mesh Th = gmshload("wires.msh");
+
+plot(Th,wait=1);
+
+// Create function space
+fespace Vh(Th,P1);
+Vh PHI,v;
+Vh[int] phi(NWIRES);
+
+real[int] BcWire(NWIRES+1);
+
+for (int k=0;k<NWIRES;k++){
+  BcWire=0;
+  BcWire(k+1)=1;
+  problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+                        +on(0,PHI=BcWire(0))
+                        +on(1,PHI=BcWire(1))
+                        +on(2,PHI=BcWire(2));
+  Poisson;
+  phi[k]=PHI;
+  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+ }
+
+real[int,int] M(NWIRES+1,NWIRES+1);
+M=0.;
+
+for (int k=1;k<NWIRES;k++) {
+  for (int j=0;j<NWIRES;k++) {
+    M(k,j)=int1d(Th,k)(-dx(phi[j])*N.x-dy(phi[j])*N.y);
+  }
+ }
+
+real[int,int] MM=M(1:NWIRES,1:NWIRES);
+cout << M << endl;
+cout << MM << endl;
+
+
+// plot(phi0,wait=1,value=true);
+// plot(phi,wait=1,value=true);
+// cout<< phi0[].min <<endl;
+// cout<< phi[].min <<endl;

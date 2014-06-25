@@ -19,12 +19,12 @@ for (int k=0;k<NWIRES;k++) {
 border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=7;}; 
 
 // wire 1 cetered at (-1,0) radius rw
-border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;}; 
-border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;}; 
-border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;}; 
-border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;}; 
-border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;}; 
-border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;}; 
+border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;};
+border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;};
+border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;};
+border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;};
+border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;};
+border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;};
 
 int m=5;
 mesh Th;

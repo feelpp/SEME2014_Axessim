@@ -96,5 +96,7 @@ Return
 // MAIN
 //------------------------------------------------------------------------------
 lc = 1;
-Include "multiwires.dat";
+
+isCircleSurfMarked=1;
+Include "multiwires2.dat";
 Call WireFromData;
