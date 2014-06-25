@@ -78,7 +78,7 @@ int main( int argc, char** argv )
         // Dirichlet boundary condition (strongly imposed on each boundary !!!)
         for(int j=0; j<nwires; j++)
         {
-            a += on( _range=markedfaces( mesh, ( boost::format( "wire-%1%" ) % j ).str() ),
+            a += on( _range=markedfaces( mesh, ( boost::format( "dw%1%" ) % j ).str() ),
                      _rhs=l,
                      _element=phi,
                      _expr=chi(i==j) );
@@ -86,9 +86,9 @@ int main( int argc, char** argv )
 
         a.solve( _rhs=l, _solution=phi );
 
-        auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "wire-%1%" ) % i ).str() ), cst(1.));
+        auto o1 = vf::project(Xh, markedfaces( mesh, ( boost::format( "dw%1%" ) % i ).str() ), cst(1.));
         auto bound=integrate( _range=elements( mesh ),
-                              _expr=gradv(phi)*trans(gradv(o1)) ).evaluate()(0,0);
+                              _expr=gradt(phi)*trans(gr&adv(o1)) ).evaluate()(0,0);
         std::cout << bound;
 
         e->add( ( boost::format( "phi%1%" ) % i ).str(), phi );
