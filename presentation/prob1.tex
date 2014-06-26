@@ -1,0 +1,76 @@
+\begin{frame}
+\frametitle{Sous forme de matrice}
+%Consid\`ere le mod\`ele
+%\begin{equation}
+%-\Delta\varphi = j_z 
+%\end{equation}
+On peut \'ecrire
+ \begin{equation}
+ \varphi = \sum_k \phi_k \tilde{\varphi}_k
+ \end{equation}
+ avec $\tilde{\varphi}$ est solution de probl\`eme suivante 
+ \begin{equation}
+ \begin{cases}
+ -\Delta\tilde{\varphi} = 0 \quad \text{sur } \Omega \\
+ \tilde{\varphi} = \delta_{ij} 
+ \end{cases}
+ \end{equation}
+ donc on a
+ \begin{equation}
+ \sum_j \phi_j \left( \int_{w_i}-\Delta\tilde{\varphi}_j \right) =I_i
+ \end{equation}
+ ou bien
+ \begin{equation}
+  \sum_j \phi_j \left( \int_{\partial w_i}-\nabla\tilde{\varphi}_j \right) \cdot n =I_i
+ \end{equation}
+ en d'\'eduit
+  \begin{equation}
+  \sum_j M_{ij}\phi_j =I_i \quad \forall i 
+ \end{equation}
+%
+%\begin{eqnarray*}
+%\frac{\partial U}{\partial z} =ZI, \quad Z=R+j\omega L,\\
+%\frac{\partial I}{\partial z} =YU, \quad Y=G+j\omega C.
+%\end{eqnarray*}
+
+
+\end{frame} 
+
+ \begin{frame}
+\frametitle{Calcul la matrice M}
+On a
+\begin{equation}
+  M_{ij} = \int_{\partial w_j} \frac{\partial\varphi_i}{\partial n}
+\end{equation}
+ Properties de la matrice $M$
+ \begin{itemize}
+ \item Sym\'etrique 
+ \item D\'efinie positive
+ \item Inversible
+ \end{itemize}
+ Ou bien
+\begin{equation}
+  M\phi =I \quad \text{ou bien } \phi =LI \quad \text{o\`u } L=M^-1 
+\end{equation}
+
+
+\end{frame} 
+
+\begin{frame}
+\frametitle{Calcul la matrice M}
+Probl\`eme quand on a calculer directement l'int\'egrale : La matrice $M$ n'est plus sym\'etrique 
+=> solution: formulation faiblement
+\begin{equation}
+\int_\Omega -\Delta\varphi \psi =\int_w \nabla\varphi\psi - \int_{\partial w} \nabla\varphi\cdot n \psi =\int_{\partial w} \nabla\varphi\cdot n 
+\end{equation}
+avec $\psi \in H(w)$ satifait 
+\begin{equation}
+\psi(z) =
+\begin{cases}
+0 \qquad \text{ si } z\in w \\
+1 \qquad \text{ si } z\in \partial w
+\end{cases}
+\end{equation} 
+
+
+\end{frame} 
