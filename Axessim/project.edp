@@ -1,83 +1,227 @@
-real rs = 2;
-real rw = 0.1;
-real ri= 0.5;
+real rs = 12;
+real rw = rs/8;
+real ri= rw;
 real epsilon=8.85418782e-12;
 
-int NWIRES=6;
+int NWIRES=3;
 
 real Cexact=2*pi*epsilon/(log(rs/rw));
 
 // Main wire (blindage) of radius rs
 border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
 
-real[int] X(6),Y(6);
+// real[int] X(3),Y(3);
+// for (int k=0;k<NWIRES;k++) {
+// 	X(k)=cos(k*pi/3);
+// 	Y(k)=sin(k*pi/3);
+//  }
+
+real[int] X(3),Y(3);
 for (int k=0;k<NWIRES;k++) {
-  X(k)=cos(k*pi/3);
-  Y(k)=sin(k*pi/3);
+	X(k)=2*cos(2*k*pi/NWIRES);
+	Y(k)=2*sin(2*k*pi/NWIRES);
  }
 
-border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=7;}; 
+
+//border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=7;};
 
 // wire 1 cetered at (-1,0) radius rw
-border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;}; 
-border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;}; 
-border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;}; 
-border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;}; 
-border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;}; 
-border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;}; 
+border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;};
+border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;};
+border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;};
+// border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;};
+// border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;};
+// border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;};
 
 int m=5;
 mesh Th;
-// mesh=read("mesh.msh");
+Th=buildmesh(circleShield(20*m)
+             +circleWire1(-5*m)
+             +circleWire2(-5*m)
+             +circleWire3(-5*m) );
+// +circleWire4(-5*m)[]<0;44;22m
+             // +circleWire5(-5*m)
+             // +circleWire6(-5*m)
+             // +circleWireInt(-5*m));
+//plot(Th,wait=1);
 
-Th=buildmesh(circleShield(10*m)
-	     +circleWire1(-5*m)
-	     +circleWire2(-5*m)
-	     +circleWire3(-5*m)
-	     +circleWire4(-5*m)
-	     +circleWire5(-5*m)
-	     +circleWire6(-5*m)
-	     +circleWireInt(-5*m));
-plot(Th,wait=1);
 
 // Create function space
 fespace Vh(Th,P1);
 Vh PHI,v;
-Vh[int] phi(NWIRES);
+Vh[int] phi(NWIRES+1);
 
 real[int] BcWire(NWIRES+1);
-
-for (int k=0;k<NWIRES;k++){
-  BcWire=0;
-  BcWire(k+1)=1;
-  problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
-    +on(0,PHI=BcWire(0))
-    +on(1,PHI=BcWire(1))
-    +on(2,PHI=BcWire(2))
-    +on(3,PHI=BcWire(3))
-    +on(4,PHI=BcWire(4))
-    +on(5,PHI=BcWire(5))
-    +on(6,PHI=BcWire(6));
-  Poisson;
-  phi[k]=PHI;
-  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+for (int k=0;k<NWIRES+1;k++){
+	BcWire=0;
+	BcWire(k)=1;
+	problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+		+on(0,PHI=BcWire(0))
+		+on(1,PHI=BcWire(1))
+		+on(2,PHI=BcWire(2))
+		+on(3,PHI=BcWire(3));
+		// +on(4,PHI=BcWire(4))
+		// +on(5,PHI=BcWire(5))
+		// +on(6,PHI=BcWire(6))
+		// +on(7,PHI=0.);
+	Poisson;
+	phi[k]=PHI;
+	//plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
  }
 
-real[int,int] M(NWIRES+1,NWIRES+1);
-M=0.;
 
-for (int k=1;k<NWIRES;k++) {
-  for (int j=0;j<NWIRES;k++) {
-    M(k,j)=int1d(Th,k)(-dx(phi[j])*N.x-dy(phi[j])*N.y);    
-  }
+//func psi = ((x-X(0))^2+(y-Y(0))^2<=rw^2)+((x-X(0))^2+(y-Y(0))^2>rw^2)*exp(-1./(((x-X(0))^2+(y-Y(0))^2-rw^2)^2)+1);
+// func psi1 = ((x-X(0))^2+(y-Y(0))^2<=rw^2)+((x-X(0))^2+(y-Y(0))^2>rw^2)*exp(-(((x-X(0))^2+(y-Y(0))^2)-rw^2)^8);
+// func psi2 = ((x-X(1))^2+(y-Y(1))^2<=rw^2)+((x-X(1))^2+(y-Y(1))^2>rw^2)*exp(-(((x-X(1))^2+(y-Y(1))^2)-rw^2)^8);
+// func psi3 = ((x-X(2))^2+(y-Y(2))^2<=rw^2)+((x-X(2))^2+(y-Y(2))^2>rw^2)*exp(-(((x-X(2))^2+(y-Y(2))^2)-rw^2)^8);
+
+func psi1 = 1./(1+((x-X(0))^2+(y-Y(0))^2-rw^2)^2);
+func psi2 = 1./(1+((x-X(1))^2+(y-Y(1))^2-rw^2)^2);
+func psi3 = 1./(1+((x-X(2))^2+(y-Y(2))^2-rw^2)^2);
+
+
+Vh[int] psih(NWIRES);
+psih[0]=psi1;
+psih[1]=psi2;
+psih[2]=psi3;
+
+plot(psih[0],wait=1,value=1,dim=3,fill=1);
+plot(psih[1],wait=1,value=1,dim=3,fill=1);
+plot(psih[2],wait=1,value=1,dim=3,fill=1);
+
+real[int,int] M(NWIRES,NWIRES);
+//M=0.;
+
+for (int i=0; i<NWIRES; ++i)
+	for (int j=0; j<NWIRES; ++j)
+	{
+		M(i,j) = int2d(Th)(dx(phi[i+1])*dx(psih[j]) + dy(phi[i+1])*dy(psih[j]));
+	}
+
+cout<<"M= "<< M <<endl;
+
+ofstream filename("level"+rs+".m");
+
+filename << "M" << rs  << "=[" <<"\n";
+
+for (int i=0; i<M.n; ++i) {
+	for (int j=0; j<M.m; ++j)
+	{
+		filename << M(i,j) <<" " ;
+	}
+	filename << ";" << "\n";
  }
+filename << "]  " <<"\n";
+// real[int,int] M(NWIRES+1,NWIRES+1);
+// M=0.;
 
-real[int,int] MM=M(1:NWIRES,1:NWIRES);
-cout << M << endl;
-cout << MM << endl;
 
 
-// plot(phi0,wait=1,value=true);
-// plot(phi,wait=1,value=true);
-// cout<< phi0[].min <<endl;
-// cout<< phi[].min <<endl;
+// for (int k=0;k<NWIRES+1;k++) {
+// 	for (int j=0;j<NWIRES+1;j++) {
+// 		M(k,j)=int1d(Th,k)(-dx(phi[j])*N.x-dy(phi[j])*N.y);
+// 	}
+//  }
+
+// real[int,int] MM=M(1:NWIRES,1:NWIRES);
+// cout << M << endl;
+// cout << MM << endl;
+
+
+
+//
+
+// real rs = 1;
+// real rw = 0.5;
+// real ri= 0.5;
+// real epsilon=8.85418782e-12;
+
+// int NWIRES=2;
+
+// real Cexact=2*pi*epsilon/(log(rs/ri));
+
+// // Main wire (blindage) of radius rs
+// border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
+
+// real[int] X(6),Y(6);
+// for (int k=0;k<NWIRES;k++) {
+// 	X(k)=cos(2*k*pi/NWIRES);
+// 	Y(k)=sin(2*k*pi/NWIRES);
+//  }
+
+
+// //macro Wire(i) border circleWire#i(t=0,2*pi){x=X(i-1)+rw*cos(t);y=Y(i-1)+rw*sin(t);label=i;} //
+// //Wire(1); Wire(2); //Wire(3); Wire(4); Wire(5); Wire(6);
+
+// // for (int k=1; k<NWIRES+1; k++)
+// //  {
+// // 	 Wire(k)
+// //  }
+
+// border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=1;};
+
+// int m=10;
+// mesh Th;
+// Th=buildmesh(circleShield(10*m)
+//              //+circleWire1(-m)
+//              //+circleWire2(-m) );
+//              // +circleWire3(-5*m)
+//              // +circleWire4(-5*m)
+//              // +circleWire5(-5*m)
+//              // +circleWire6(-5*m)
+//              +circleWireInt(-10*m));
+// plot(Th,wait=1);
+
+// // Create function space
+// fespace Vh(Th,P1);
+// Vh PHI,v;
+// Vh[int] phi(NWIRES+1);
+
+// // real[int] BcWire(NWIRES+1);
+// // for (int k=0;k<NWIRES+1;k++){
+// // 	BcWire=0;
+// // 	BcWire(k)=1;
+// // 	problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))x
+// // 		+on(0,PHI=BcWire(0))
+// // 		+on(1,PHI=BcWire(1))
+// // 		+on(2,PHI=BcWire(2));
+// // 		// +on(3,PHI=BcWire(3))
+// // 		// +on(4,PHI=BcWire(4))
+// // 		// +on(5,PHI=BcWire(5))
+// // 		// +on(6,PHI=BcWire(6))
+// // 		//+on(7,PHI=0.);
+// // 	Poisson;
+// // 	phi[k]=PHI;
+// // 	plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+// //  }
+
+
+// problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+// 	+on(0,PHI=1)+on(1,PHI=0.);
+// Poisson;
+
+// phi[0]=PHI;
+
+// problem Poisson1(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+// 	+on(0,PHI=0)+on(1,PHI=1.);
+// Poisson1;
+// phi[1]=PHI;
+
+// plot(phi[0],wait=1,value=1,fill=1,cmm="solution k="+0);
+// plot(phi[1],wait=1,value=1,fill=1,cmm="solution k="+1);
+
+// real[int,int] M(2,2);
+// M=0.;
+
+// for (int k=0;k<2;k++) {
+// 	for (int j=0;j<2;j++) {
+// 		M(k,j)=int1d(Th,k)(dx(phi[j])*N.x+dy(phi[j])*N.y);
+// 	}
+//  }
+
+
+// //real[int,int] MM=M(1:NWIRES,1:NWIRES);
+// real MM=M(1,1);
+// cout << M << endl;
+// cout << MM << endl;
+// cout<< Cexact << endl;
