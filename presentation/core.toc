@@ -6,5 +6,7 @@
 \beamer@subsectionintoc {2}{1}{prob1}{8}{0}{2}
 \beamer@sectionintoc {3}{Cas des cables et des blindages}{11}{0}{3}
 \beamer@subsectionintoc {3}{1}{prob2}{12}{0}{3}
-\beamer@sectionintoc {4}{Conclusions et perspectives}{13}{0}{4}
-\beamer@subsectionintoc {4}{1}{hack}{14}{0}{4}
+\beamer@sectionintoc {4}{Cas test}{15}{0}{4}
+\beamer@subsectionintoc {4}{1}{test}{16}{0}{4}
+\beamer@sectionintoc {5}{Conclusions et perspectives}{17}{0}{5}
+\beamer@subsectionintoc {5}{1}{hack}{18}{0}{5}

@@ -41,18 +41,23 @@
 %-------------------------------------------------------------------------------
 \begin{frame}{Multi-wires}
   \begin{columns}[T]
-    \column{0.5\linewidth}
+    \column{0.3\linewidth}
     \begin{itemize}
       \item This example shows a shield composed of a wire and a shield which has its own
           wires.
     \end{itemize}
-    \column{0.5\linewidth}
+    \column{0.8\linewidth}
     \begin{tikzpicture}[scale=0.8]
-      \draw [thick,fill=cyan!10!white]  (0,0) node (v1) {} ellipse (3 and 3);
-      \draw [thick,fill=cyan!40!white] (-1,0) ellipse (1.5 and 1.5);
-      \draw [thick,fill=cyan] (2,0) ellipse (0.5 and 0.5);
-      \draw [thick,fill=cyan] (-1.7,0) ellipse (0.5 and 0.5);
-      \draw [thick,fill=cyan] (-0.3,0) ellipse (0.5 and 0.5);
+      \draw [thick,fill=cyan!10!white]  (0,0) node (v1) {} ellipse (4 and 4);
+       \node at (-4.3,0) {$w_0$};
+      \draw [thick,fill=cyan!40!white] (-2,0) ellipse (1.5 and 1.5);
+       \draw [thick,fill=cyan!40!white] (2,0) ellipse (1.5 and 1.5);
+        \node at (-2,1.7) {$w_1$};
+        \node at (2,1.7) {$w_2$};
+
+%      \draw [thick,fill=cyan] (2,0) ellipse (0.5 and 0.5);
+%      \draw [thick,fill=cyan] (-1.7,0) ellipse (0.5 and 0.5);
+%      \draw [thick,fill=cyan] (-0.3,0) ellipse (0.5 and 0.5);
     \end{tikzpicture}
   \end{columns}
 \end{frame}
