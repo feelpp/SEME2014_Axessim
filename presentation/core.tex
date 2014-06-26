@@ -3,136 +3,135 @@
 \usetheme{Madrid}
 \usefonttheme[onlymath]{serif}
 \useoutertheme[subsection=false]{smoothbars}
-\beamertemplateshadingbackground{yellow!30}{white}
-%\usepackage{tikz}
+%\beamertemplateshadingbackground{yellow!30}{white}
+\usepackage{tikz}
 \usepackage[french]{babel}
-\usepackage[utf8]{inputenc} 
-\usepackage[T1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{multicol}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage[all]{xy}
 \usepackage{array}
 \setbeamertemplate{navigation symbols}{}
-
-
 \usepackage{amsmath, amssymb, esint, amstext}
-\setbeamertemplate{theorem begin}
-{
-\begin{\inserttheoremblockenv}
-{Th\'eor\`eme}}
 
-\setbeamerfont{frametitle}{size=\large}
+%\setbeamertemplate{theorem begin}
+%{
+%\begin{\inserttheoremblockenv}{Th\'eor\`eme}}
+%
+%\setbeamerfont{frametitle}{size=\large}
+%
+%\AtBeginSection[]{
+%  \begin{frame}[t]
+%    \frametitle{Plan}
+%    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=hide]
+%  \end{frame}
+%}
 
-\AtBeginSection[] {
-  \begin{frame}[t]
-    \frametitle{Plan}
-      \tableofcontents[sectionstyle=show/shaded,subsectionstyle=hide]
-  \end{frame}
-} 
 
-\title[SEME 2014]{Projet Axessim : Calcul de matrice d'imp\'edance pour la simulation num\'erique des lignes de transmission multi-conducteur}
-\author[Projet Axessim ]{Propos\'e par C. Giraudon, P. Helluy et T. Strub, \\[1ex]
-avec J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar }
+%------------------------------------------------------------------------------
+\title[SEME 2014]{Projet Axessim : Calcul de matrice d'imp\'edance pour la
+simulation num\'erique des lignes de transmission multi-conducteur}
+\author[Projet Axessim ]{Propos\'e par C. Giraudon, P. Helluy et T. Strub,
+\\[1ex] avec J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar }
 \institute[ ]{Semaine d'\'etude Maths-Entreprises
 \vspace{.5cm}
-
 
 \includegraphics[height=1cm]{Logos/unistra.jpg}
 \hspace{3cm}
 \includegraphics[height=1cm]{Logos/inr}
 }
 \date{Strasbourg, le 27 juin 2014}
+%------------------------------------------------------------------------------
 
-%%%%%%%%%%%%%%                      Debut du document                             %%%%%%%%%%%%%%%
 
 
+%==============================================================================
+% DOCUMENT BEGIN HERE
+%==============================================================================
 \begin{document}
 
 
-%%%%%%%%%%%%%%                      Titre                             %%%%%%%%%%%%%%%
+%------------------------------------------------------------------------------
 \begin{frame}
   \titlepage
 \end{frame}
+%------------------------------------------------------------------------------
 
 
-
-
-
-%%%%%%%%%%%%%%                      TOC                             %%%%%%%%%%%%%%%
-
-
-
+%------------------------------------------------------------------------------
 \begin{frame}[allowframebreaks]
 \frametitle{\Large Plan de la pr\'esentation }
 \tableofcontents[hideallsubsections]
 \end{frame}
+%------------------------------------------------------------------------------
 
 
-
-%%%%%%%%%%%%%%                      Introduction                             %%%%%%%%%%%%%%%
-
+%------------------------------------------------------------------------------
 \section[Intro.]{Introduction}\subsection{hack}
-\include{intro}
+%\include{intro}
+%------------------------------------------------------------------------------
 
-%%%%%%%%%%%%%%                      modèle et assemblage matrice                            %%%%%%%%%%%%%%%
 
-
+%------------------------------------------------------------------------------
 \section[Mtrice]{Probl\`eme}\subsection{prob1}
-\include{prob1}
+%\include{prob1}
+%------------------------------------------------------------------------------
 
-%%%%%%%%%%%%%%                      assemblage matrice                            %%%%%%%%%%%%%%%
 
-
+%------------------------------------------------------------------------------
 \section[Cabs+blindages]{Cas des cables et des blindages}\subsection{prob2}
-\include{prob2}
+%\include{prob2}
+%------------------------------------------------------------------------------
 
-%%%%%%%%%%%%%%                      cas test                           %%%%%%%%%%%%%%%
 
-
+%------------------------------------------------------------------------------
 \section[Cas test]{Cas test}\subsection{test}
 \include{testgui}
 \include{testabd}
 \include{testjoub}
+%------------------------------------------------------------------------------
 
-%%%%%%%%%%%%%%                      Discussions et perspectives                              %%%%%%%%%%%%%%%
 
+%------------------------------------------------------------------------------
 \section{Conclusions et perspectives}\subsection{hack}
 \begin{frame}
-Bilan :
-\begin{itemize}
-\item AAA
-\item BBB
-\item CCC
-\end{itemize}
-\vspace{1cm}
-\pause
-Perspectives :
-\begin{itemize}
-\item Cas g\'en\'eral
-\item Probl\`eme global -> local
-\item Autres 
-\item Modèles plus complexes
-\end{itemize}
+  Bilan :
+  \begin{itemize}
+    \item AAA
+    \item BBB
+    \item CCC
+  \end{itemize}
+  \vspace{1cm}
+  \pause
+  Perspectives :
+  \begin{itemize}
+    \item Cas g\'en\'eral
+    \item Probl\`eme global -> local
+    \item Autres
+    \item Modèles plus complexes
+  \end{itemize}
 \end{frame}
+%------------------------------------------------------------------------------
 
 
+%------------------------------------------------------------------------------
 \begin{frame}
 \begin{center}
 \Huge Merci de votre attention !
 \end{center}
 \end{frame}
+%------------------------------------------------------------------------------
 
 
-%%%%%%%%%%%%%%                  References et FIN                                   %%%%%%%%%%%%%%%
+%------------------------------------------------------------------------------
 \tiny
 \include{ref}
+%------------------------------------------------------------------------------
 
-
-
-
-
-\end{document} 
-
-
+\end{document}
+%==============================================================================
+% DOCUMENT END HERE
+%==============================================================================
 
