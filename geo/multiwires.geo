@@ -93,10 +93,119 @@ Function WireFromData
 Return
 
 //------------------------------------------------------------------------------
+// Create Nc recurrence of 3 circles
+// Rx - initial x position for the center of the 3 circles
+// Ry - initial y position for the center of the 3 circles
+// d  - distance from the center
+//------------------------------------------------------------------------------
+Function WireDataTriCircle1
+    isCircleSurfMarked=0;
+    DATA[]={};
+    Rx=0;
+    Ry=0;
+    dist=40;
+    distfrombound=4;
+    Nc=10;
+    For j In {1:Nc}
+        For i In {1:3}
+            rad=dist/2;
+            DATA+=dist*Cos(i*2*Pi/3);
+            DATA+=dist*Sin(i*2*Pi/3);
+            DATA+=rad;
+            DATA+=0;
+        EndFor
+        DATA+=0;
+        DATA+=0;
+        DATA+=dist+rad+distfrombound;
+        DATA+=0;
+        dist=dist/4;
+        distfrombound=distfrombound/4;
+    EndFor
+Return
+
+//------------------------------------------------------------------------------
+// Create Nc recurrence of 3 circles
+// Rx - initial x position for the center of the 3 circles
+// Ry - initial y position for the center of the 3 circles
+// d  - distance from the center
+//------------------------------------------------------------------------------
+Function WireDataTriCircle2
+    isCircleSurfMarked=0;
+    DATA[]={};
+    Rx=0;
+    Ry=0;
+    dist=10;
+    dist2=30;
+    distfrombound=4;
+    distfrombound2=4;
+    Nc=1;
+    For j In {1:Nc}
+        For k In {1:3}
+            Rx=dist2*Cos(k*2*Pi/3);
+            Ry=dist2*Sin(k*2*Pi/3);
+
+            //For i In {1:3}
+            //    rad=dist/2;
+            //    DATA+=dist/2*Cos(i*2*Pi/3);
+            //    DATA+=dist/2*Sin(i*2*Pi/3);
+            //    DATA+=rad/2;
+            //    DATA+=0;
+            //EndFor
+
+            // Tri wires diag
+            //For i In {1:3}
+            //    rad=dist/2;
+            //    DATA+=dist2*Cos(i*2*Pi/3+Pi/3);
+            //    DATA+=dist2*Sin(i*2*Pi/3+Pi/3);
+            //    DATA+=3*rad/2;
+            //    DATA+=0;
+            //EndFor
+
+            // Tri wires center
+            For i In {1:3}
+                rad=dist/2;
+                DATA+=Rx+dist*Cos(i*2*Pi/3);
+                DATA+=Ry+dist*Sin(i*2*Pi/3);
+                DATA+=rad;
+                DATA+=0;
+            EndFor
+
+            //For i In {1:3}
+            //    rad=dist/2;
+            //    DATA+=Rx+dist*Cos(i*2*Pi/3+Pi/3);
+            //    DATA+=Ry+dist*Sin(i*2*Pi/3+Pi/3);
+            //    DATA+=rad/2;
+            //    DATA+=0;
+            //EndFor
+
+            DATA+=Rx;
+            DATA+=Ry;
+            DATA+=dist+rad+distfrombound;
+            DATA+=0;
+        EndFor
+
+        dist=dist/4;
+        distfrombound=distfrombound/4;
+    EndFor
+            DATA+=0;
+            DATA+=0;
+            DATA+=dist2+dist+rad+distfrombound+distfrombound2+20;
+            DATA+=0;
+        distfrombound2=distfrombound2/4;
+Return
+
+//------------------------------------------------------------------------------
 // MAIN
 //------------------------------------------------------------------------------
-lc = 1;
+lc = 5;
 
 isCircleSurfMarked=1;
-Include "multiwires2.dat";
+
+// Load data from a file
+//Include "multiwires2.dat";
+//Call WireDataTriCircle1;
+
+//Call WireDataTriCircle1;
+Call WireDataTriCircle2;
+
 Call WireFromData;
