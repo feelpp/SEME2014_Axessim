@@ -1,0 +1,70 @@
+
+//number of circles
+int Nc=2;
+int N=12*Nc+1;
+
+real[int] Rx(N);
+real[int] Ry(N);
+real[int] R(N);
+int[int] nn(N);
+int[int] Id(N);
+
+// Generate circles center and radius
+real dist=10;
+real dist2=30;
+int idx=0;
+real eps=6;
+real eps2=6;
+real rad=4;
+int Rxinit=0;
+int Ryinit=0;
+
+//Rx[idx]=Rxinit;
+//Ry[idx]=Ryinit;
+//R[idx]=dist2+dist+R[idx-1]+eps+16;
+//nn[idx]=10;
+//Id[idx]=idx++;
+
+Rx[idx]=Rxinit;
+Ry[idx]=Ryinit;
+R[idx]=dist+dist2+eps+rad+eps2;
+nn[idx]=10;
+Id[idx]=idx++;
+
+for(int i=0; i<Nc; i++)
+{
+    for(int j=0; j<3; j++)
+    {
+        Rxinit=dist2*cos(j*2*pi/3);
+        Ryinit=dist2*sin(j*2*pi/3);
+
+        for(int k=0; k<3; k++ )
+        {
+            Rx[idx]=Rxinit+dist*cos(k*2*pi/3);
+            Ry[idx]=Ryinit+dist*sin(k*2*pi/3);
+            R[idx]=rad;
+            nn[idx]=10;
+            Id[idx]=idx++;
+        }
+
+        Rx[idx]=Rxinit;
+        Ry[idx]=Ryinit;
+        R[idx]=dist+rad+eps;
+        nn[idx]=10;
+        Id[idx]=idx++;
+    }
+    dist=dist/4;
+    rad=rad/4;
+    eps=eps/4;
+}
+
+// Circle function
+border circle(t=0,2*pi;i){
+    x=Rx[i]+R[i]*cos(t);
+    y=Ry[i]+R[i]*sin(t);
+    label=Id[i];
+};
+
+plot(circle(nn),wait=1);
+mesh Th=buildmesh( circle(nn) );
+plot(Th,wait=1);
