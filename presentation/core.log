@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.2)  26 JUN 2014 22:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.2)  26 JUN 2014 23:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1160,7 +1160,7 @@ Package: esint
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\\' on input line 35.
 
-(./core.aux)
+(./core.aux (./intro.aux) (./prob1.aux) (./prob2.aux) (./test.aux) (./ref.aux))
 \openout1 = `core.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
@@ -1179,7 +1179,6 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 49.
 LaTeX Font Info:    ... okay on input line 49.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 49.
 LaTeX Font Info:    ... okay on input line 49.
-
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1360,13 +1359,13 @@ File: uesint.fd
 )
 Package xypdf Info: Line width: 0.43799pt on input line 49.
  (./core.nav)
-<Logos/unistra.jpg, id=38, 322.3242pt x 151.767pt>
+<Logos/unistra.jpg, id=78, 322.3242pt x 151.767pt>
 File: Logos/unistra.jpg Graphic file (type jpg)
  <use Logos/unistra.jpg>
 Package pdftex.def Info: Logos/unistra.jpg used on input line 55.
 (pdftex.def)             Requested size: 60.4258pt x 28.45274pt.
 
-<Logos/inr.jpg, id=39, 375.4025pt x 135.50626pt>
+<Logos/inr.jpg, id=79, 375.4025pt x 135.50626pt>
 File: Logos/inr.jpg Graphic file (type jpg)
  <use Logos/inr.jpg>
 Package pdftex.def Info: Logos/inr.jpg used on input line 55.
@@ -1386,7 +1385,7 @@ LaTeX Font Warning: Font shape `T1/cmss/m/n' in size <4> not available
 \openout2 = `intro.aux'.
 
 
-(./intro.tex <figures/f1.png, id=153, 797.98125pt x 517.935pt>
+(./intro.tex <figures/f1.png, id=193, 797.98125pt x 517.935pt>
 File: figures/f1.png Graphic file (type png)
 
 <use figures/f1.png>
@@ -1424,7 +1423,7 @@ Overfull \vbox (11.62685pt too high) detected at line 37
 \openout2 = `prob2.aux'.
 
  (./prob2.tex
-<figures/f2.png, id=360, 518.93875pt x 596.2275pt>
+<figures/f2.png, id=395, 518.93875pt x 596.2275pt>
 File: figures/f2.png Graphic file (type png)
  <use figures/f2.png>
 Package pdftex.def Info: figures/f2.png used on input line 16.
@@ -1448,10 +1447,10 @@ Overfull \vbox (0.30951pt too high) detected at line 88
 \openout2 = `test.aux'.
 
  (./test.tex
-<figures/f3.png, id=458, 621.32124pt x 592.2125pt>
+<figures/f3.png, id=491, 621.32124pt x 592.2125pt>
 File: figures/f3.png Graphic file (type png)
  <use figures/f3.png>
-Package pdftex.def Info: figures/f3.png used on input line 24.
+Package pdftex.def Info: figures/f3.png used on input line 28.
 (pdftex.def)             Requested size: 124.26204pt x 118.4404pt.
 
 [16
@@ -1485,14 +1484,8 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 132.
 (./core.aux (./intro.aux) (./prob1.aux) (./prob2.aux) (./test.aux) (./ref.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 132.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 132.
-
-Package rerunfilecheck Warning: File `core.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `core.out':
-(rerunfilecheck)             Before: D41D8CD98F00B204E9800998ECF8427E;0
-(rerunfilecheck)             After:  592C063AD478AB3997D903E730F7AECA;1071.
+Package rerunfilecheck Info: File `core.out' has not changed.
+(rerunfilecheck)             Checksum: 592C063AD478AB3997D903E730F7AECA;1071.
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
@@ -1500,10 +1493,10 @@ LaTeX Font Warning: Size substitutions with differences
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 132.
  ) 
 Here is how much of TeX's memory you used:
- 23152 strings out of 493315
- 392856 string characters out of 6137905
- 514685 words of memory out of 5000000
- 25996 multiletter control sequences out of 15000+600000
+ 23178 strings out of 493315
+ 393132 string characters out of 6137905
+ 516582 words of memory out of 5000000
+ 26012 multiletter control sequences out of 15000+600000
  19917 words of font info for 61 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  49i,20n,77p,3233b,757s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1525,10 +1518,10 @@ e/2013/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/texlive/
 13/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texlive/2013
 /texmf-dist/fonts/type1/public/cm-super/sfss1440.pfb></usr/local/texlive/2013/t
 exmf-dist/fonts/type1/public/cm-super/sfss2488.pfb>
-Output written on core.pdf (20 pages, 294415 bytes).
+Output written on core.pdf (20 pages, 295989 bytes).
 PDF statistics:
- 650 PDF objects out of 1000 (max. 8388607)
- 566 compressed objects within 6 object streams
+ 681 PDF objects out of 1000 (max. 8388607)
+ 597 compressed objects within 6 object streams
  51 named destinations out of 1000 (max. 500000)
- 128 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 208 words of extra memory for PDF output out of 10000 (max. 10000000)
 
