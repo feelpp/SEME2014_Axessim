@@ -1,0 +1,30 @@
+%%%%%cas simple d'un blindage avec des conducteurs %%%%%%%%%
+\begin{frame}
+\frametitle{Cas simple d'un blindage avec des conducteurs}
+\begin{columns}[T]
+\column{0.45\linewidth}
+\begin{center}
+\includegraphics[scale=0.2]{figures/f3}
+\end{center}
+\column{0.55\linewidth}
+Blindage de r\'er\'erence $w_0$, $2$ conducteurs $w_1, w_2$
+\begin{itemize}
+\item $1^{ere}$ \'etape : calcul $\varphi_i$ avec $i=1,2$-solution de
+ \begin{equation}
+ \begin{cases}
+ -\Delta\varphi_i = 0 \quad \text{sur } w0 \\
+ \varphi_i =  
+ \begin{cases}
+ 1 \quad \text{sur } w_i \\
+ 0 \quad \text{sur} w
+ \end{cases}
+ \end{cases}
+ \end{equation}
+\item Chaque conducteur $w_i$ a $NN_i$ sous conducteurs dedans
+\item Chaque conducteur $w_i$ matrice d'inductance $L_{int}^i$
+\item $L_{ext}$ : matrice d'inductance des conducteurs ext\'erieurs  
+\end{itemize}
+\end{columns}
+\end{frame} 
+
+%%%%%cas simple des blindage avec des conducteurs (2 niveaux) %%%%%%%%%
