@@ -1,10 +1,10 @@
-\documentclass[compress, blue, hyperref={unicode, bookmarks=true, pdfpagemode=FullScreen}]{beamer}
+\documentclass[compress, hyperref={unicode, bookmarks=true}]{beamer}
 \mode<presentation>
 \usetheme{Madrid}
 \usefonttheme[onlymath]{serif}
 \useoutertheme[subsection=false]{smoothbars}
 %\beamertemplateshadingbackground{yellow!30}{white}
-\usepackage{tikz}
+\usepackage{etex}
 \usepackage[french]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -15,6 +15,9 @@
 \usepackage{array}
 \setbeamertemplate{navigation symbols}{}
 \usepackage{amsmath, amssymb, esint, amstext}
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,patterns,plotmarks,shapes,snakes,er,3d,automata,backgrounds,topaths,trees,petri,mindmap}
+\tikzstyle{every picture}+=[remember picture]
 
 %\setbeamertemplate{theorem begin}
 %{
@@ -37,10 +40,8 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 \\[1ex] avec J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar }
 \institute[ ]{Semaine d'\'etude Maths-Entreprises
 \vspace{.5cm}
-
 \includegraphics[height=1cm]{Logos/unistra.jpg}
 \hspace{3cm}
-\includegraphics[height=1cm]{Logos/inr}
 }
 \date{Strasbourg, le 27 juin 2014}
 %------------------------------------------------------------------------------
@@ -70,19 +71,19 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 
 %------------------------------------------------------------------------------
 \section[Intro.]{Introduction}\subsection{hack}
-%\include{intro}
+\include{intro}
 %------------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------------
 \section[Mtrice]{Probl\`eme}\subsection{prob1}
-%\include{prob1}
+\include{prob1}
 %------------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------------
 \section[Cabs+blindages]{Cas des cables et des blindages}\subsection{prob2}
-%\include{prob2}
+\include{prob2}
 %------------------------------------------------------------------------------
 
 
