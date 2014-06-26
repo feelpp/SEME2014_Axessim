@@ -1,5 +1,5 @@
 //number of circles
-int Nc=1;
+int Nc=5;
 int N=1+3+3*4*Nc;
 
 real[int] Rx(N);
@@ -18,28 +18,22 @@ real rad=4;
 int Rxinit=0;
 int Ryinit=0;
 
-//Rx[idx]=Rxinit;
-//Ry[idx]=Ryinit;
-//R[idx]=dist2+dist+R[idx-1]+eps+16;
-//nn[idx]=10;
-//Id[idx]=idx++;
-
-// Shield
+// Main Shield
 Rx[idx]=Rxinit;
 Ry[idx]=Ryinit;
 R[idx]=dist+dist2+eps+rad+eps2;
-nn[idx]=10;
+nn[idx]=20;
 Id[idx]=idx++;
 
 for(int k=0; k<3; k++ )
 {
-    Rxinit=dist*cos(k*2*pi/3);
-    Ryinit=dist*sin(k*2*pi/3);
+    Rxinit=dist2*cos(k*2*pi/3);
+    Ryinit=dist2*sin(k*2*pi/3);
     // Wires
-    Rx[idx]=Rxinit+dist*cos(k*2*pi/3);
-    Ry[idx]=Ryinit+dist*sin(k*2*pi/3);
+    Rx[idx]=Rxinit;
+    Ry[idx]=Ryinit;
     R[idx]=dist+rad+eps;
-    nn[idx]=10;
+    nn[idx]=20;
     Id[idx]=idx++;
 }
 
@@ -56,7 +50,7 @@ for(int i=0; i<Nc; i++)
             Rx[idx]=Rxinit+dist*cos(k*2*pi/3);
             Ry[idx]=Ryinit+dist*sin(k*2*pi/3);
             R[idx]=rad;
-            nn[idx]=10;
+            nn[idx]=20;
             Id[idx]=idx++;
         }
 
@@ -64,7 +58,7 @@ for(int i=0; i<Nc; i++)
         Rx[idx]=Rxinit;
         Ry[idx]=Ryinit;
         R[idx]=rad;
-        nn[idx]=10;
+        nn[idx]=20;
         Id[idx]=idx++;
 
     }
