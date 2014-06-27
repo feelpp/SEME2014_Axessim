@@ -1,5 +1,6 @@
+%------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Cas des cables et des blindages}
+  \frametitle{Cas des cables et des blindages}
   \begin{columns}[T]
     \column{0.5\linewidth}
     \begin{itemize}
@@ -9,12 +10,26 @@
       \item $L_{ext}$ : matrice d'inductance des conducteurs ext\'erieurs  
     \end{itemize}
     \column{0.5\linewidth}
-\begin{center}
-\includegraphics[scale=0.25]{figures/f2}
-\end{center}
+    \begin{center}
+      \begin{tikzpicture}[scale=0.6]
+        \draw [thick,fill=cyan!10!white]  (0,0) node (v1) {} ellipse (4 and 4);
+        \node at (-4.5,0) {$w_0$};
+        \draw [thick,fill=cyan] (-2,0) ellipse (1 and 1);
+        \draw [thick,fill=cyan!40!white] (2,0) ellipse (1.5 and 1.5);
+        \node at (-2,1.7) {$w_1$};
+        \node at (2,1.7) {$w_2$};
+
+        %      \draw [thick,fill=cyan] (2,0) ellipse (0.5 and 0.5);
+        \draw [thick,fill=cyan] (2,0.6) ellipse (0.5 and 0.5);
+        \draw [thick,fill=cyan] (2,-0.6) ellipse (0.5 and 0.5);
+      \end{tikzpicture}
+    \end{center}
   \end{columns}
 \end{frame}
+%------------------------------------------------------------------------------
 
+
+%------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Cas des cables et des blindages}
 On obtient
@@ -46,9 +61,11 @@ L_{ext} & \\
 I_{int} \end{array}  \right] 
 \] \\[0.6cm]
 ($\tilde{\phi}_{int}$ potentiel int\'erieux calcul\'e avec une r\'ef\'erence sur les blindages)
-
 \end{frame}
+%------------------------------------------------------------------------------
 
+
+%------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Cas des cables et des blindages}
 Changement de variables
@@ -86,4 +103,4 @@ L_{ext} &0 \\
  \] 
 
 \end{frame}
-
+%------------------------------------------------------------------------------

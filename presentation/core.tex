@@ -36,14 +36,24 @@
 %------------------------------------------------------------------------------
 \title[SEME 2014]{Projet Axessim : Calcul de matrice d'imp\'edance pour la
 simulation num\'erique des lignes de transmission multi-conducteur}
-\author[Projet Axessim ]{Propos\'e par C. Giraudon, P. Helluy et T. Strub,
-\\[1ex] avec J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar }
-\institute[ ]{Semaine d'\'etude Maths-Entreprises
+\author[Projet Axessim ]{
+\large J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar 
+\\[1ex] \small supervis\'e par
+\\[1ex] \large C. Giraudon, P. Helluy et T. Strub, }
+\institute[ ]{Semaine d'\'etude Maths-Entreprises \\
 \vspace{.5cm}
-\includegraphics[height=1cm]{Logos/unistra.jpg}
-\hspace{3cm}
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[width=0.1\linewidth]{Logos/unistra.jpg}\hspace{.5cm}
+\includegraphics[width=0.1\linewidth]{Logos/logouha.jpg}\hspace{.5cm}
+\includegraphics[width=0.1\linewidth]{Logos/logolmia.jpg}\hspace{.5cm}
+\includegraphics[width=0.1\linewidth]{Logos/logoirmia.jpg}\hspace{.5cm}
+\includegraphics[width=0.1\linewidth]{Logos/logoamies.jpg}\hspace{.5cm}
+\includegraphics[width=0.1\linewidth]{Logos/logocemosis.jpg}\hspace{.5cm}
+\end{minipage}
+%\hspace{3cm}
 }
-\date{Strasbourg, le 27 juin 2014}
+\date{\small Strasbourg, le 27 juin 2014}
 %------------------------------------------------------------------------------
 
 
@@ -70,25 +80,29 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 
 
 %------------------------------------------------------------------------------
-\section[Intro.]{Introduction}\subsection{hack}
+\section[Intro.]{Introduction}
+\subsection{hack}
 \include{intro}
 %------------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------------
-\section[Mtrice]{Probl\`eme}\subsection{prob1}
+\section[Matrices]{Probl\`eme}
+\subsection{prob1}
 \include{prob1}
 %------------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------------
-\section[Cabs+blindages]{Cas des cables et des blindages}\subsection{prob2}
+\section[Conducteurs et blindages]{Cas des cables et des blindages}
+\subsection{prob2}
 \include{prob2}
 %------------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------------
-\section[Cas test]{Cas test}\subsection{test}
+\section[Cas test]{Cas test}
+\subsection{test}
 \include{testgui}
 \include{testabd}
 \include{testjoub}
@@ -96,7 +110,8 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 
 
 %------------------------------------------------------------------------------
-\section{Conclusions et perspectives}\subsection{hack}
+\section{Conclusions et perspectives}
+\subsection{hack}
 \begin{frame}
   Bilan :
   \begin{itemize}
