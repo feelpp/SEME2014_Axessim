@@ -2,17 +2,18 @@
 \frametitle{Sous forme de matrice}
 %Consid\`ere le mod\`ele
 %\begin{equation}
-%-\Delta\varphi = j_z 
+%-\Delta\varphi = j_z
 %\end{equation}
 On peut \'ecrire
  \begin{equation}
- \tilde\varphi = \sum_k \phi_k \tilde{\varphi}_k
+   \tilde\varphi = \sum_k \phi_k \tilde{\varphi}_k
  \end{equation}
- avec $\tilde{\varphi}$ est solution de probl\`eme suivante 
+ avec $\tilde{\varphi}$ est solution de probl\`eme suivante
  \begin{equation}
+   \label{eq:2}
  \begin{cases}
  -\Delta{\varphi} = 0 \quad \text{sur } \Omega \\
- {\varphi} = \delta_{ij} 
+ {\varphi} = \delta_{ij}
  \end{cases}
  \end{equation}
  donc on a
@@ -25,7 +26,7 @@ On peut \'ecrire
  \end{equation}
  en d'\'eduit
   \begin{equation}
-  \sum_j M_{ij}\phi_j =I_i \quad \forall i 
+  \sum_j M_{ij}\phi_j =I_i \quad \forall i
  \end{equation}
 %
 %\begin{eqnarray*}
@@ -34,43 +35,45 @@ On peut \'ecrire
 %\end{eqnarray*}
 
 
-\end{frame} 
+\end{frame}
 
  \begin{frame}
 \frametitle{Calcul la matrice M}
 On a
 \begin{equation}
+  \label{eq:3}
   M_{ij} = \int_{\partial w_j} \frac{\partial\varphi_i}{\partial n}
 \end{equation}
  Properties de la matrice $M$
  \begin{itemize}
- \item Sym\'etrique 
+ \item Sym\'etrique
  \item D\'efinie positive
  \item Inversible
  \end{itemize}
  Ou bien
 \begin{equation}
-  M\phi =I \quad \text{ou bien } \phi =LI \quad \text{o\`u } L=M^{-1} 
+  \label{eq:4}
+  M\phi =I \quad \text{ou bien } \phi =LI \quad \text{o\`u } L=M^{-1}
 \end{equation}
 
 
-\end{frame} 
+\end{frame}
 
 \begin{frame}
 \frametitle{Calcul la matrice M}
-Probl\`eme quand on a calculer directement l'int\'egrale : La matrice $M$ n'est plus sym\'etrique 
+Probl\`eme quand on a calculer directement l'int\'egrale : La matrice $M$ n'est plus sym\'etrique
 => solution: formulation faiblement
 \begin{equation}
-\int_w -\Delta\varphi \psi =\int_w \nabla\varphi\nabla\psi - \int_{\partial w} \nabla\varphi\cdot n \psi =\int_{\partial w} \nabla\varphi\cdot n 
+\int_w -\Delta\varphi \psi =\int_w \nabla\varphi\nabla\psi - \int_{\partial w} \nabla\varphi\cdot n \psi =\int_{\partial w} \nabla\varphi\cdot n
 \end{equation}
-avec $\psi \in H^1(w)$ satifait 
+avec $\psi \in H^1(w)$ satifait
 \begin{equation}
 \psi(z) =
 \begin{cases}
 0 \qquad \text{ si } z\in w \\
 1 \qquad \text{ si } z\in \partial w
 \end{cases}
-\end{equation} 
+\end{equation}
 
 
-\end{frame} 
+\end{frame}
