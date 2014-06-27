@@ -37,7 +37,7 @@
 \title[SEME 2014]{Projet Axessim : Calcul de matrice d'imp\'edance pour la
 simulation num\'erique des lignes de transmission multi-conducteur}
 \author[Projet Axessim ]{
-\large J. Aghili, G. Doll\'e, N. Pham, A. Samake, A. Assmar 
+\large J. Aghili, G. Doll\'e, N. Pham, A. Samake, S. Asmar 
 \\[1ex] \small supervis\'e par
 \\[1ex] \large C. Giraudon, P. Helluy et T. Strub, }
 \institute[ ]{Semaine d'\'etude Maths-Entreprises \\
@@ -103,6 +103,7 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 %------------------------------------------------------------------------------
 \section[Simulations]{Simulation sur des multi-conducteurs}
 \subsection{test}
+\include{test}
 \include{testgui}
 \include{testabd}
 \include{testjoub}
@@ -115,18 +116,15 @@ simulation num\'erique des lignes de transmission multi-conducteur}
 \begin{frame}
   Bilan :
   \begin{itemize}
-    \item AAA
-    \item BBB
-    \item CCC
+    \item Résolution des problèmes locaux vers global sur FreeFEM++.
+    \item Résolution du problème global.
   \end{itemize}
   \vspace{1cm}
   \pause
   Perspectives :
   \begin{itemize}
-    \item Cas g\'en\'eral
-    \item Probl\`eme global -> local
-    \item Autres
-    \item Modèles plus complexes
+    \item Résoudre le problème global vers local (Meilleurs stabilité ?).
+    \item Travailler sur des modèles plus complexes.
   \end{itemize}
 \end{frame}
 %------------------------------------------------------------------------------
@@ -149,6 +147,11 @@ simulation num\'erique des lignes de transmission multi-conducteur}
   \bibliography{seme2014_axessim}
 \end{frame}
 %-------------------------------------------------------------------------------
+
+\tiny
+\include{ref}
+
+\end{document} 
 
 \end{document}
 %==============================================================================
