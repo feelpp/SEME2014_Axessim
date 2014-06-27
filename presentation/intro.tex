@@ -1,12 +1,17 @@
+%------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Probl\`eme physique}
-%JE VAIS
-Calculer les tensions $U(z,\omega) =(u_1 \cdots u_N)^T$ et les courants $I(z,\omega) = (I_1\cdots I_N)$ complexes dans un faisceau de conducteurs $w_i$, $i=1\cdots N$. Les cables sont entour\'es d'un blindage $w_0$. La forme du faisceau est fix\'ee dans le plan $(x,y)$ et invariante suivant $z$.
-\begin{center}
-\includegraphics[height=4cm]{figures/f1}
-\end{center}
-Exemple de section de cab
-\end{frame} 
+  \frametitle{Probl\`eme physique}
+  %JE VAIS
+  Calculer les tensions $U(z,\omega) =(u_1 \cdots u_N)^T$ et les courants
+  $I(z,\omega) = (I_1\cdots I_N)$ complexes dans un faisceau de conducteurs
+  $w_i$, $i=1\cdots N$. Les cables sont entour\'es d'un blindage $w_0$. La forme
+  du faisceau est fix\'ee dans le plan $(x,y)$ et invariante suivant $z$.
+  \begin{center}
+    \includegraphics[height=4cm]{figures/f1}\\
+    \small  Exemple de section d'un cable.
+  \end{center}
+\end{frame}
+%------------------------------------------------------------------------------
 
 
 \begin{frame}
@@ -30,12 +35,12 @@ Propri\'etes des matrices:
 \begin{frame}
 \frametitle{Probl\`eme}
 Flux magn\'etique $\varphi(x,y)$. \\
-Champ magn\'etique: d\'drive d'un potentiel vecteur 
+Champ magn\'etique: d\'edrive d'un potentiel vecteur 
 $$B=\nabla \times (0,0,\varphi)^T.$$ et
 $$\nabla\times B=(0,0,j_z)^T$$ avec
 \begin{itemize}
 \item  $j_z(x,y)$ : densit\'e de courant suivant $z$
-\item  $I_i= \int _{w_i}(x,y)dxdy$ :  courant
+\item  $I_i= \int _{w_i}j_z(x,y)dxdy$ :  courant
 \end{itemize}
 On a
 \begin{equation}
