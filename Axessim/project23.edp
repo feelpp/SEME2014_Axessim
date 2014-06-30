@@ -1,0 +1,252 @@
+load "lapack"
+load "fflapack"
+
+// SHIELD
+real rs = 6;
+real rw = 0.05;
+// WIRE 1
+real rw1 = 0.2;
+//WIRE 2
+real rw2=0.8;
+//WIRE 3 and 4
+real rw34=0.2;
+real epsilon=8.85418782e-12;
+
+// real[int] AX=[0,4.5,9,2.5,5,0,4.5,2.5,5,0,4.5,-4.5,-9,-2.5,-5,-4.5,-2.5,-5,-4.5];
+// real[int] AY=[0,0,0,3.5,3.5,7,7,-3.5,-3.5,-7,-7,];
+
+
+// for (int k=0;k<NWIRES;k++) {
+// 	X(k)=2*cos(2*k*pi/NWIRES);
+// 	Y(k)=2*sin(2*k*pi/NWIRES);
+//  }
+
+
+// // Main wire (blindage) of radius rs
+// border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
+
+// real[int] X(4),Y(4);
+
+// // WIRE VIDE W1
+// X(0)=-1;Y(0)=0.;
+// border circleWire1(t=0,2*pi){x=X(0)+AX(0)+rw1*cos(t);y=Y(0)+AY(0)+rw1*sin(t);label=1;};
+
+// //WIRE W2
+// X(1)=1;Y(1)=0;
+// border circleWire2(t=0,2*pi){x=X(1)+AX(0)+rw2*cos(t);y=Y(1)+AY(0)+rw2*sin(t);label=2;};
+
+// //WIRE 3
+// X(2)=1;Y(2)=0.4;
+// border circleWire3(t=0,2*pi){x=X(2)+AX(0)+rw34*cos(t);y=Y(2)+AY(0)+rw34*sin(t);label=3;};
+
+// //WIRE 4
+// X(3)=1;Y(3)=-0.4;
+// border circleWire4(t=0,2*pi){x=X(3)+AX(0)+rw34*cos(t);y=Y(3)+AY(0)+rw34*sin(t);label=4;};
+
+// int m=5;
+// mesh Th0,Th1;
+// Th0=buildmesh(
+//               circleShield(10*m)
+//               +circleWire1(-5*m)
+//               +circleWire2(-5*m)
+//               +circleWire3(-5*m)
+//               +circleWire4(-5*m)
+//               );
+
+
+// plot(Th0,wait=1);
+
+border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=99;};
+
+real X0,Y0;
+func psi = ((x-X0)^2+(y-Y0)^2 <= rw^2)
+  +((x-X0)^2+(y-Y0)^2 > rw^2)
+  *( exp( - 10^12* ( sqrt((x-X0)^2+(y-Y0)^2) - rw  )^10  ) );
+
+
+real tmp = rs-1;
+int ii=0;
+//real[int] NN=[-4*rw,0,4*rw];
+
+int Nlarge=15;
+real[int] NN(Nlarge);
+real[int] Xhaut(Nlarge),Yhaut(Nlarge);
+real[int] Xbas(Nlarge),Ybas(Nlarge);
+
+
+
+for (int k=0; k<Nlarge; k++)
+ {
+	 NN(k)=-0.3*rs+k*5*rw;
+ }
+
+for (int k=0; k< Nlarge ; k++) {
+	Xhaut(k)= NN(k);
+	Yhaut(k)=-tmp;
+
+	Xbas(k)=NN(k)+rw;
+	Ybas(k)=-tmp-10*rw;
+ }
+
+
+border a(t=0,2*pi;i){
+	x=Xhaut(i)+rw*cos(t);
+	y=Yhaut(i)+rw*sin(t);
+	label=i;
+}
+
+int[int] nn(Nlarge);
+nn=-40;
+
+border b(t=0,2*pi;i){
+	x=Xbas(i)+rw*cos(t);
+	y=Ybas(i)+rw*sin(t);
+	label=i+NN.n;
+}
+
+plot(a(nn)+b(nn)+circleShield(60));
+
+mesh Th=buildmesh(a(nn)+b(nn)+circleShield(30));
+//plot(Th,wait=1);
+
+fespace Vh(Th,P1);
+func adaptfunc = exp(-(y+rs-1));
+//func adaptfunc = 1./(y-rs+1);
+//func adaptfunc = ;
+Vh fh;
+//Th=adaptmesh(Th,fh);
+//fespace Vh(Th,P1);
+
+//for (int i=0;i<10;i++)
+//{
+Th=adaptmesh(Th,fh);
+fh=adaptfunc;
+plot(Th,wait=1,ps="bigcircle.ps");
+// }
+
+
+Vh[int] phi(2*Nlarge);
+Vh[int] psih(2*Nlarge);
+
+Vh PHI,v;
+func identity=1;
+Vh Idh=identity;
+
+//varf bilinA(PHI,v)=int2d(Th)( dx(PHI)*dx(v) + dy(PHI)*dy(v) ) +int1d(Th,0)(PHI*v);
+// matrix A=bilinA(Vh,Vh);
+
+// func zerofunction = 0;
+// Vh zeroem=0;
+
+for (int k=0; k< Nlarge;k++) {
+
+	X0=Xhaut(k);
+	Y0=Yhaut(k);
+
+	//Vh psih = psi;
+	psih[k] = psi;
+	//plot(psih,wait=1,dim=2,fill=1,value=1);
+
+	problem PoissonHaut(PHI,v)=int2d(Th)( dx(PHI)*dx(v) + dy(PHI)*dy(v) )
+		+on(99,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,PHI=0.)
+		+on(k,PHI=1.);
+	PoissonHaut;
+	phi[k]=PHI;
+	//plot(PHI,wait=1,dim=2,fill=1,value=1,cmm="phi k="+k);
+	// Calcul de M
+	// ...
+
+	X0=Xbas(k);
+	Y0=Ybas(k);
+
+	psih[k+Nlarge] = psi;
+	//plot(psih,wait=1,dim=2,fill=1,value=1);
+
+	problem PoissonBas(PHI,v)=int2d(Th)( dx(PHI)*dx(v) + dy(PHI)*dy(v) )
+		+on(99,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,PHI=0.)
+		+on(Nlarge+k,PHI=1.);
+	PoissonBas;
+	phi[k+Nlarge]=PHI;
+	//plot(PHI,wait=1,dim=2,fill=1,value=1,cmm="phi k=Nlarge+"+k);
+}
+
+real[int,int] M(2*Nlarge,2*Nlarge);
+
+for (int i=0;i<M.n;i++)
+ {
+	 for (int j=0;j<M.m;j++)
+	 {
+		 M(i,j)=int2d(Th)(dx(phi[i])*dx(psih[j])+dy(phi[i])*dy(psih[j]));
+	 }
+ }
+
+//matrix Mtemp =
+// matrix MM=M;
+// matrix MMt=MM';//'
+
+//cout<< "MM= "<< MM-MMt <<endl;
+
+//cout<<"M= "<< Mtemp <<endl;
+//cout<<"M-M^t= "<< M-M' <<endl; // '
+
+
+// tests sous octave
+ofstream filename("Level"+rs+".m");
+filename << "M" << rs  << "=[" <<"\n";
+
+for (int i=0; i<M.n; ++i) {
+	for (int j=0; j<M.m; ++j)
+	{
+		filename << M(i,j) <<" " ;
+	}
+	filename << ";" << "\n";
+ }
+filename << "]  " <<"\n";
+
+
+real[int,int] Lext(2*Nlarge,2*Nlarge);
+Lext= M^-1;
+
+cout<<"Lext= "<< Lext <<endl;
+
+
+ofstream filenameLext("Lext"+rs+".m");
+
+filenameLext << "Lext" << rs  << "=[" <<"\n";
+
+for (int i=0; i<M.n; ++i) {
+	for (int j=0; j<M.m; ++j)
+	{
+		filenameLext << Lext(i,j) <<" " ;
+	}
+	filenameLext << ";" << "\n";
+ }
+filenameLext << "]  " <<"\n";
+
+
+
+// Lecture du Lint
+ifstream f("Lint.dat");
+int NlargeLint;
+f >> NlargeLint;
+real[int,int] LintFromFile(NlargeLint,NlargeLint);
+
+cout << NlargeLint << endl;
+
+for (int i=0; i< NlargeLint; i++) {
+	for (int j=0; j< NlargeLint; j++) {
+		f >> LintFromFile(i,j);
+		cout<<"Lint("<< i << ","<< j <<")= "<< LintFromFile(i,j) ;
+	}
+	cout<<endl;
+ }
+
+// real[int,int] delta(2,2);
+
+// delta=[[0,0],[1,1]];
+
+// cout<< "delta= "<< delta << endl;
+
+// real[int,int] P(2,2);
+
+// P=[[1,0,0,0],[0,1,-1,-1],[0,0,1,0],[0,0,0,1]];

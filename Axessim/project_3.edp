@@ -1,0 +1,298 @@
+load "lapack"
+load "fflapack"
+
+
+//SHIELD
+real rs = 0.025;
+real rw1 = rs/3;
+//Radius of each blindage
+real Rbldg=0.8;
+
+//Radius of each wire contained in each blindage
+real Rw= 0.0025;
+
+//distance from origin to center of each blindages
+real dog = 1;
+real dow = 0.4;
+
+real epsilon=8.85418782e-12;
+
+/*
+// Number of "blindages"
+int Nblindages = 3;
+int NwirePerBlindages= 2;
+int NwireTotal = Nblindages * NwirePerBlindages;
+
+// Main wire (blindage) of radius rs
+border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
+
+// Will contain the x,y positions of the center of each blindage
+real[int] XB(Nblindages),YB(Nblindages);
+
+// Positions of wire included in the blindages
+real[int] XW(NwireTotal),YW(NwireTotal);
+
+
+for (int i=0;i<Nblindages;i++) {
+	XB(i) =dog*cos(2*pi*i/Nblindages);
+	YB(i) =dog*sin(2*pi*i/Nblindages);
+
+	for (int j=0;j<NwirePerBlindages; j++)  {
+		XW(j+i) = XB(i) + dow*cos(2*pi*j/NwirePerBlindages);
+		YW(j+i) = YB(i) + dow*sin(2*pi*j/NwirePerBlindages);
+	}
+ }
+
+
+border bb(t=0,1;i)
+{
+	x = XB[i]+Rbldg*cos(2*pi*t);
+	y = YB[i]+Rbldg*sin(2*pi*t);
+	label = 0;
+}
+
+int[int] NBldg(Nblindages);
+for (int k=0;k<Nblindages;k++) {
+	NBldg(k)=k;
+}
+
+plot(bb(NBldg),wait=1);
+*/
+
+real[int] X(4), Y(4);
+
+// WIRE VIDE W1
+X(0)=-rs/2;Y(0)=0;
+border circleWire1(t=0,2*pi){x=X(0)+rw1*cos(t);y=Y(0)+rw1*sin(t);label=1;};
+//WIRE W2
+X(1)=rs/2;Y(1)=0;
+border circleWire2(t=0,2*pi){x=X(1)+rw2*cos(t);y=Y(1)+rw2*sin(t);label=2;};
+
+//WIRE 3
+X(2)=rs/2;Y(2)=0.4;
+border circleWire3(t=0,2*pi){x=X(2)+rw34*cos(t);y=Y(2)+rw34*sin(t);label=3;};
+
+//WIRE 4
+X(3)=rs/2;Y(3)=-0.4;
+border circleWire4(t=0,2*pi){x=X(3)+rw34*cos(t);y=Y(3)+rw34*sin(t);label=4;};
+
+int m=5;
+mesh Th0,Th1;
+Th0=buildmesh(
+	      circleShield(10*m)
+	     +circleWire1(-5*m)
+	     +circleWire2(-5*m));
+
+Th1=buildmesh(
+	      circleWire2(5*m)
+	      +circleWire3(-5*m)
+	      +circleWire4(-5*m));
+//plot(Th0,wait=1);
+//plot(Th1,wait=1);
+
+// Create function space
+fespace Vh0(Th0,P1);
+fespace Vh1(Th1,P1);
+
+// ETAPE 1
+Vh1 PHIlow,vlow;
+Vh1[int] philow(2);
+real[int] bC(3);
+// 0 -> label 2
+// 1 -> label 3
+// 2 -> label 4
+
+// Resoudre PHI 1 sur W1
+bC=[0.,1.,0.];
+problem Poisson(PHIlow,vlow) = int2d(Th1)(dx(PHIlow)*(dx(vlow))+dy(PHIlow)*(dy(vlow)))
+  + on(2,PHIlow=bC(0))
+  + on(3,PHIlow=bC(1))
+  + on(4,PHIlow=bC(2));
+Poisson;
+philow[0]=PHIlow;
+//plot(PHIlow,fill=1,dim=3,wait=1,value=1);
+
+// Resolution de PHI 2
+bC=[0.,0.,1.];
+Poisson;
+philow[1]=PHIlow;
+//plot(PHIlow,dim=3,wait=1,value=1);
+
+real[int,int] M1(2,2);
+M1=0.;
+
+func psi1 = ((x-X(2))^2+(y-Y(2))^2 <= rw34^2)
+  +((x-X(2))^2+(y-Y(2))^2 > rw34^2)
+  *( exp( - 10^8* ( sqrt((x-X(2))^2+(y-Y(2))^2) - rw34  )^8  ) );
+
+func psi2 = ((x-X(3))^2+(y-Y(3))^2 <= rw34^2)
+  +((x-X(3))^2+(y-Y(3))^2 > rw34^2)
+  *( exp( - 10^8* ( sqrt((x-X(3))^2+(y-Y(3))^2) - rw34  )^8  ) );
+
+
+func f3=((x-X(2))^2+(y-Y(2))^2 <= rw34^2);
+func f4=((x-X(3))^2+(y-Y(3))^2 <= rw34^2);
+
+Vh1[int] pf(2);
+pf[0]=psi1; pf[1]=psi2;
+//pf[0]=f3; pf[1]=f4;
+
+plot(pf[0],dim=3,value=1,fill=1,wait=1);
+plot(pf[1],dim=3,value=1,fill=1,wait=1);
+
+for (int i=0;i<2;++i){
+for (int j=0;j<2;++j){
+  M1(i,j)=int2d(Th1)(dx(philow[i])*dx(pf[j])+dy(philow[i])*dy(pf[j]));
+ }
+}
+cout << "Matrice M1" << M1 << endl;
+real[int,int] Lint(2,2);
+Lint = M1^-1;
+
+cout << "Matrice Lint" << Lint << endl;
+
+
+// ETAPE 2
+Vh0 PHIupper,vupper;
+Vh0[int] phiupper(2);
+real[int] bCupper(3);
+// 0 -> label 2
+// 1 -> label 3
+// 2 -> label 4
+
+// Resoudre PHI 1 sur W1
+bCupper=[0.,1.,0.];
+problem Poissonupper(PHIupper,vupper) = int2d(Th0)(dx(PHIupper)*(dx(vupper))+dy(PHIupper)*(dy(vupper)))
+  + on(0,PHIupper=bCupper(0))
+  + on(1,PHIupper=bCupper(1))
+  + on(2,PHIupper=bCupper(2));
+Poissonupper;
+phiupper[0]=PHIupper;
+//plot(PHIupper,fill=1,dim=3,wait=1,value=1);
+
+// Resolution de PHI 2
+bCupper=[0.,0.,1.];
+Poissonupper;
+phiupper[1]=PHIupper;
+//plot(PHIupper,dim=3,wait=1,value=1);
+
+real[int,int] M2(2,2);
+M2=0.;
+
+func psiupper1 = ((x-X(0))^2+(y-Y(0))^2 <= rw1^2)
+  +((x-X(0))^2+(y-Y(0))^2 > rw1^2)
+  *( exp( - 10^8* ( sqrt((x-X(0))^2+(y-Y(0))^2) - rw1  )^8  ) );
+
+func psiupper2 = ((x-X(1))^2+(y-Y(1))^2 <= rw2^2)
+  +((x-X(1))^2+(y-Y(1))^2 > rw2^2)
+  *( exp( - 10^8* ( sqrt((x-X(1))^2+(y-Y(1))^2) - rw2  )^8  ) );
+
+
+// func f3upper=((x-X(2))^2+(y-Y(2))^2 <= rw34^2);
+// func f4upper=((x-X(3))^2+(y-Y(3))^2 <= rw34^2);
+
+Vh0[int] pfupper(2);
+pfupper[0]=psiupper1; pfupper[1]=psiupper2;
+//pfupper[0]=f3upper; pfupper[1]=f4upper;
+
+plot(pfupper[0],dim=3,value=1,fill=1,wait=1);
+plot(pfupper[1],dim=3,value=1,fill=1,wait=1);
+
+for (int i=0;i<2;++i){
+for (int j=0;j<2;++j){
+  M2(i,j)=int2d(Th0)(dx(phiupper[i])*dx(pfupper[j])+dy(phiupper[i])*dy(pfupper[j]));
+ }
+}
+cout << "Matrice M2" << M2 << endl;
+real[int,int] Lext(2,2);
+Lext= M2^-1;
+
+cout << "Matrice Lext" << Lext << endl;
+
+
+
+
+
+
+
+
+
+
+real[int,int] delta(2,2);
+
+delta=[[0,0],[1,1]];
+
+cout<< "delta= "<< delta << endl;
+
+real[int,int] P(2,2);
+
+P=[[1,0,0,0],[0,1,-1,-1],[0,0,1,0],[0,0,0,1]];
+//matrix P=[[1,0,0,0],[0,1,-1,-1],[0,0,1,0],[0,0,0,1]];
+
+cout<< "P= "<< P <<endl;
+
+real[int,int] PT(2,2);
+
+PT = P';//';
+cout<< "P^t= "<< PT <<endl;
+//real[int,int] MM(4,4);
+//matrix MM=[[M1,0],[0,M2]];
+matrix MM=[[Lext,0],[0,Lint]];
+cout<<"matrix MM"<< MM <<endl;
+matrix T=[[1,0,0,0],[0,1,-1,-1],[0,0,1,0],[0,0,0,1]];
+matrix TT=T';//';
+
+//real[int,int] L(4,4);
+matrix L = TT*MM;
+L=L*T;
+real[int,int] LL(4,4);
+
+for (int i=0; i<4; ++i)
+	for (int j=0; j<4; ++j)
+	{
+		LL(i,j)=L(i,j);
+	}
+
+//LL=L;
+
+cout<< "matrix L= "<< LL << endl;
+
+
+
+
+
+// real[int] BcWire(NWIRES+1);
+// for (int k=0;k<NWIRES;k++){
+//   BcWire=0;
+//   BcWire(k+1)=1;
+//   problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+//     +on(0,PHI=BcWire(0))
+//     +on(1,PHI=BcWire(1))
+//     +on(2,PHI=BcWire(2))
+//     +on(3,PHI=BcWire(3))
+//     +on(4,PHI=BcWire(4))
+//     +on(5,PHI=BcWire(5))
+//     +on(6,PHI=BcWire(6));
+//   Poisson;
+//   phi[k]=PHI;
+//   plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+//  }
+
+// real[int,int] M(NWIRES+1,NWIRES+1);
+// M=0.;
+
+// for (int k=1;k<NWIRES;k++) {
+//   for (int j=0;j<NWIRES;k++) {
+//     M(k,j)=int1d(Th,k)(dx(phi[j])*N.xdy(phi[j])*N.y);
+//   }
+//  }
+
+// real[int,int] MM=M(1:NWIRES,1:NWIRES);
+// cout << M << endl;
+// cout << MM << endl;
+
+
+// plot(phi0,wait=1,value=true);
+// plot(phi,wait=1,value=true);
+// cout<< phi0[].min <<endl;
+// cout<< phi[].min <<endl;
