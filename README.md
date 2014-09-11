@@ -22,14 +22,15 @@ https://github.com/cemosis/seme2014-organisation/blob/master/Sujets/README.md
 
 Report and slides can be compiled using a texlive base install which should be
 available on most linux/unix distributions.
-Consider using the provided makefile to automatically compile the sources
-withthe bibliography:
+Consider using the provided makefile to automatically compile the tex sources
+and also the bibliography:
 
 | Command  | Description |
 | -------- | ------ |
 |`make`| compile the tex document into ./tmp |
 |`make clean`| clean the tmp folder |
 
+NB: You might have to execute twice make to print the bibliography.
 
 # Freefem++
 
