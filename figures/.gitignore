@@ -3,5 +3,5 @@
 !*.jpg
 !*.png
 !*.pdf
-!*.ps
+!/*/*.ps
 !*.eps
