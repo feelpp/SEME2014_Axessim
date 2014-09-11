@@ -1,4 +1,4 @@
-!figures/
+!/figures/
 /#CTestConfig.cmake#
 /#ctest.make#
 /.DS_Store
@@ -53,3 +53,9 @@
 *.nav
 *.snm
 *.vrb
+*.pdf
+*.ps
+*.jpg
+*.png
+*.ps
+*.eps
