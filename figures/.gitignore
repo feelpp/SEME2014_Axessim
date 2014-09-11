@@ -1,7 +1,8 @@
 *
-!.gitignore
+!*/
+!/.gitignore
 !*.jpg
 !*.png
 !*.pdf
-!/*/*.ps
+!*.ps
 !*.eps
