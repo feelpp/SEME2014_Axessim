@@ -25,8 +25,10 @@ available on most linux/unix distributions.
 Consider using the provided makefile to automatically compile the sources
 withthe bibliography:
 
-|```make```| compile the tex document into ./tmp |
-|```make clean```| clean the tmp folder |
+| Command  | Description |
+| -------- | ------ |
+|`make`| compile the tex document into ./tmp |
+|`make clean`| clean the tmp folder |
 
 
 # Freefem++
