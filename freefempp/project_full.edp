@@ -45,7 +45,7 @@ Th=buildmesh(
 	      +circleWire3(5*m)
 	      +circleWire4(5*m));
 
-plot(Th,wait=1);
+plot(Th,wait=1,ps="figs/mesh-1.ps");
 
 macro Grad(u) [dx(u),dy(u)] //EOM
 
@@ -72,7 +72,7 @@ for(iter=0;iter<nwires;++iter)
    pr[iter]=1;
    Poisson;
    ur[iter]=u;
-   plot(ur[iter],fill=1,wait=1,dim=3);
+   plot(ur[iter],fill=1,wait=1,dim=3,ps="figs/poisson-"+iter+".ps");
 }
 
 
@@ -103,4 +103,4 @@ real ErrL2 = sqrt(int2d(Th,omglabel)(square(u-ui)));
 cout << " Erreur L2 = " <<  ErrL2 << " L infty (L50)" << endl;
 //     << ErrL50 << " ~ " << ErrLinty <<   endl;
 //
-plot(u,wait=1,value=1,nbiso=100,dim=3);
+plot(u,wait=1,value=1,nbiso=100,dim=3,ps="figs/sol.ps");

@@ -4,10 +4,10 @@
   \begin{columns}[T]
     \column{0.5\linewidth}
     \begin{itemize}
-      \item Blindage de r\'ef\'erence $w_0$ et $N$ conducteurs $w_1 \cdots w^1_N$
-      \item Chaque conducteur $w_i$ contient $N^i_{int}$ sous conducteurs dedans
+      \item Blindage de r\'ef\'erence $w_0$ et $N$ conducteurs $w_1 \cdots w_N$
+      \item Chaque conducteur $w_i$ contient $N^i_{int}$ sous conducteurs
       \item Chaque conducteur $w_i$ matrice d'inductance $L_{int}^i$
-      \item $L_{ext}$ : matrice d'inductance des conducteurs ext\'erieurs  
+      \item $L_{ext}$ : matrice d'inductance des conducteurs ext\'erieurs
     \end{itemize}
     \column{0.5\linewidth}
     \begin{center}
@@ -37,7 +37,7 @@ On obtient
 \phi_{ext} \\
 \tilde{\phi}^1_{int}  \\
 \vdots \\
-\tilde{\phi}^{N_{int}}_{int} \end{array}  \right]  = 
+\tilde{\phi}^{N_{int}}_{int} \end{array}  \right]  =
 \left[ \begin{array} {cccc}
 L_{ext} & & & \\
   & L^1_{int}& &  \\
@@ -47,18 +47,18 @@ L_{ext} & & & \\
 \tilde{I}_{ext} \\
 I^1_{int}  \\
 \vdots \\
-I^{N_{int}}_{int} \end{array}  \right] 
+I^{N_{int}}_{int} \end{array}  \right]
 \] \\[0.6cm]
-en d'\'eduite
+on en d\'eduit
 \[ \left[ \begin{array} {c}
 \phi_{ext} \\
-\tilde{\phi}_{int} \end{array}  \right]  = 
+\tilde{\phi}_{int} \end{array}  \right]  =
 \left[ \begin{array} {cc}
 L_{ext} & \\
   & L_{int}  \end{array}  \right]
  \left[ \begin{array} {c}
 \tilde{I}_{ext} \\
-I_{int} \end{array}  \right] 
+I_{int} \end{array}  \right]
 \] \\[0.6cm]
 ($\tilde{\phi}_{int}$ potentiel int\'erieux calcul\'e avec une r\'ef\'erence sur les blindages)
 \end{frame}
@@ -80,28 +80,28 @@ avec $\delta$ : matrice de taille $N_{ext}\times N_{int}$ et
 0 \qquad \text{sinon.}
 \end{cases}
 \end{equation}
-De plus, 
+De plus,
 \begin{equation}
 \phi_{ext} = L\tilde{I}_{ext}=L(I_{ext}-\delta I_{int})
 \end{equation}
 La matrice d'inductance globale
 \[ \left[ \begin{array} {c}
 \phi_{ext} \\
-\phi_{int} \end{array}  \right]  = 
+\phi_{int} \end{array}  \right]  =
 L
  \left[ \begin{array} {c}
 I_{ext} \\
-I_{int} \end{array}  \right] 
-\] 
+I_{int} \end{array}  \right]
+\]
 avec
 \[ L = P_I^T \left[ \begin{array} {cc}
 L_{ext} &0 \\
-0 & L_{int} \end{array}  \right] P_I , \qquad 
+0 & L_{int} \end{array}  \right] P_I , \qquad
 P_I
 \left[ \begin{array} {cc}
 1 & -\delta \\
 0 & 1 \end{array}  \right]
- \] 
+ \]
 
 \end{frame}
 %------------------------------------------------------------------------------
