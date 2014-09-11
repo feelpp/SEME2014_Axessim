@@ -36,9 +36,9 @@ NB: You might have to execute twice make to print the bibliography.
 
 Freefem++ version 3.30 minimum required
 
-See also
-[freefem++ website](http://www.freefem.org/ff++/)
-[freefem++ mercurial](http://www.freefem.org/ff++/ff++/http://www.freefem.org/ff++/ff++/)
+See also:
+- [freefem++ website](http://www.freefem.org/ff++/)
+- [freefem++ mercurial](http://www.freefem.org/ff++/ff++/http://www.freefem.org/ff++/ff++/)
 
 # Feel++
 
@@ -55,6 +55,6 @@ Then run the program
 
 This will create a ensight file .sos you can visualize using paraview or ensight.
 
-See also 
-[feel++ website](http://www.feelpp.org/)
-[feel++ github](https://github.com/feelpp/feelpp)
+See also:
+- [feel++ website](http://www.feelpp.org/)
+- [feel++ github](https://github.com/feelpp/feelpp)
