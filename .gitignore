@@ -2,6 +2,7 @@
 /#CTestConfig.cmake#
 /#ctest.make#
 /.DS_Store
+*.DS_STORE
 /.gitignore~
 /.kdev4
 /CMakeCache.txt
