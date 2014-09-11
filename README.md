@@ -7,15 +7,15 @@ http://seme.cemosis.fr/programme
 All subjects are available here:
 https://github.com/cemosis/seme2014-organisation/blob/master/Sujets/README.md
 
-# File tree
+# Directory structure
 
 | directory | description |
 | --------- | ------------|
-| ./freefempp | All freefem source codes |
-| ./feelpp | All feel++ source codes |
-| ./figures | All tex figures (binaries) |
-| ./report | Report tex sources |
-| ./slides | Presentation tex sources |
+| /freefempp | All freefem source codes |
+| /feelpp | All feel++ source codes |
+| /figures | All tex figures (binaries) |
+| /report | Report tex sources |
+| /slides | Presentation tex sources |
 
 # Report and Slides
 
