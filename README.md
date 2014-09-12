@@ -58,3 +58,7 @@ This will create a ensight file .sos you can visualize using paraview or ensight
 See also:
 - [feel++ website](http://www.feelpp.org/)
 - [feel++ github](https://github.com/feelpp/feelpp)
+
+# Mailing lists
+
+[Github commits](seme2014_axessim-commits@googlegroups.com)
