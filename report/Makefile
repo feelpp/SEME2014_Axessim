@@ -1,8 +1,8 @@
-MAIN=slides.tex
+MAIN=report.tex
 BIB=seme2014_axessim.bib
 
 all:
-	@mkdir -p tmp
+	@mkdir -p tmp tmp/chapters
 	@pdflatex -output-directory=tmp ${MAIN}
 	@cp ../bibliography/${BIB} tmp/
 	@cd tmp;\

@@ -1,0 +1,121 @@
+\documentclass[11pt,a4paper,1p,sort&compress]{elsarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[]{times}
+\usepackage{fullpage}
+\addtolength{\textheight}{1cm}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+\usepackage{showkeys}
+\date{}%leave empty
+
+%\biboptions{longnamesfirst,angle,semicolon}
+\usepackage{bm}
+%% The amssymb package provides various useful mathematical symbols
+\usepackage{amsfonts,amsmath,amssymb,amsthm}
+%% The amsthm package provides extended theorem environments
+%% \usepackage{amsthm}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+
+\usepackage{tikz}
+%\usepackage{pgfplots}
+%\usepackage{pgfplotstable}
+\usepackage{multicol}
+\usepackage{multirow}
+
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage{float}
+
+\usepackage[colorinlistoftodos]{todonotes}
+%\usepackage[disable]{todonotes}
+
+\journal{HAL}
+\begin{document}
+
+%--------------------------------------------------------------------------------
+% HEADER
+%--------------------------------------------------------------------------------
+\begin{frontmatter}
+
+%\title{Calcul de matrice d’impédance pour la simulation
+%numérique des lignes de transmission multi-conducteur.}
+
+\title{Impedance matrix computation for the numerical simulation of
+multi-conductor transmission lines}
+
+% TODO A COMPLETER
+\author[ad1]{S. Asmar}
+\ead{}
+\author[ad2]{G. Dollé}
+\ead{gdolle@unistra.fr}
+\author[ad3]{J. Nagili}
+\ead{}
+\author[ad2]{N. Pham}
+\ead{pham@math.unistra.fr}
+\author[ad4]{A. Samaké}
+\ead{}
+
+\address[ad1]{Université de Montpelier 2 /  ???????????? }
+\address[ad2]{Université de Strasbourg / CNRS, IRMA / UMR  7501. Strasbourg, F-67000, France}
+\address[ad3]{Université ??????????????????}
+\address[ad4]{Université de Grenoble 1 / CNRS, Laboratoire Jean Kuntzmann / UMR 5224, Grenoble, F-38041, France}
+
+%\cortext[cor]{Autheur correspondant ??}
+
+\begin{abstract}
+  \input{chapters/abstract}
+\end{abstract}
+
+\begin{keyword}
+SEME 2014 Axessim Strasbourg
+\end{keyword}
+
+\end{frontmatter}
+
+%--------------------------------------------------------------------------------
+% HEADER
+%--------------------------------------------------------------------------------
+
+\section*{Introduction}
+\label{sec:Introdution}
+\input{chapters/introduction}
+
+\section*{The Physical model}
+\label{sec:Model}
+\input{chapters/model}
+
+\section*{Numerical results}
+\label{sec:Results}
+\input{chapters/results}
+
+\section*{Conclusion}
+\label{sec:Conclusion}
+\input{chapters/conclusion}
+
+\section*{Acknowledgments}
+\label{sec:Acknowledgments}
+
+\section*{References}
+\label{sec:References}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{seme2014_axessim}
+
+\nocite{*}
+
+\end{document}
+%%% Local Variables:
+%%% coding: utf-8
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-parse-self: t
+%%% x-symbol-8bits: nil
+%%% TeX-auto-regexp-list: TeX-auto-full-regexp-list
+%%% TeX-master: t
+%%% ispell-local-dictionary: "american"
+%%% End:

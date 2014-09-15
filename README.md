@@ -7,10 +7,20 @@ http://seme.cemosis.fr/programme
 All subjects are available here:
 https://github.com/cemosis/seme2014-organisation/blob/master/Sujets/README.md
 
+# License
+
+Feel++ and FreeFem source codes for this project are redistributed under the LGPL-2.1 license.
+Reports, slides sources and also generated binaries are distributed under the creative common CC-BY license.
+
+see more
+[CC license terms](https://creativecommons.org/licenses/by/3.0/)
+[LGPL license terms](http://www.gnu.org/licenses/lgpl-2.1.html)
+
 # Directory structure
 
 | directory | description |
 | --------- | ------------|
+| /bibliography | bib files for latex |
 | /feelpp   | All feel++ source codes |
 | /figures  | All tex figures (binaries) |
 | /geo      | All GMSH geometries |

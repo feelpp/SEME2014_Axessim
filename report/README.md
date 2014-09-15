@@ -2,5 +2,3 @@
 
 #License
 
-To be added soon
-
