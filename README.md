@@ -12,9 +12,9 @@ https://github.com/cemosis/seme2014-organisation/blob/master/Sujets/README.md
 Feel++ and FreeFem source codes for this project are redistributed under the LGPL-2.1 license.
 Reports, slides sources and also generated binaries are distributed under the creative common CC-BY license.
 
-see more
-[CC license terms](https://creativecommons.org/licenses/by/3.0/)
-[LGPL license terms](http://www.gnu.org/licenses/lgpl-2.1.html)
+see more about:
+- [CC license terms](https://creativecommons.org/licenses/by/3.0/)
+- [LGPL license terms](http://www.gnu.org/licenses/lgpl-2.1.html)
 
 # Directory structure
 
