@@ -1,0 +1,43 @@
+\subsection*{The governing equation}
+\todo[inline]{from helluy's doc}
+The transmission model line is given by the following system of differential equations
+\begin{equation}
+  \label{eq:model}
+    \begin{array}{ccc}
+      \partial_z U&=& L\partial_t I + RI \\
+      \partial_z I&=& C\partial_t U + GU \\
+    \end{array}
+\end{equation}
+
+where we denoted the following square matrices:
+\begin{itemize}
+\item  $L$ the inductance, required to be \textbf{definite-positive and symmetric}
+\item $C$ the capacity, defined as the inverse of $L$, required to be \textbf{definite positive and symmetric}
+\item $R$ the resistivity\todo{pas sur du mot}, assumed to be diagonal
+\item $G$ the conductancy, defined as the inverse of $R$.
+\end{itemize}
+
+we get rid \todo{change this} of the time dependancy in $\eqref{eq:model}$ by applying a Fourier transformation $(U,I) \mapsto (\hat{U},\hat{I})$, one finally gets, after dropping the hats the following system
+\begin{equation}
+  \label{eq:model.fourier}
+    \begin{array}{ccc}
+      \partial_z U &=& (j\omega L + R) I \\
+      \partial_z I &=& (j\omega C  + G) U \\  
+    \end{array}
+\end{equation}
+for the latter we denote by $Z$ the impedance matrix defined by $Z=(j\omega L + R)$ and $Y=(j\omega C  + G)$. The main concern of this paper is to compute $L$ with desired properties, independantly \todo{ ? } from the number of conductors, $C$ is straightforwardly deduced.
+
+In the following chapters, we give the steps to compute the matrices at the continuous scale. We then suggest a way to enforce the symmetry and the definite positive conditions.
+\subsection*{The single armour case}
+\todo[inline]{rewrite from helluy's doc all the blabla}
+
+\subsection*{The multiple armour/cable case}
+\todo[inline]{rewrite from helluy's doc all the blabla}
+
+\subsection*{Symmetry enforcement by weak formulation}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../report"
+%%% End:
