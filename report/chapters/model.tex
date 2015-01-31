@@ -59,7 +59,7 @@ Since $\varphi$ is assumed regular enough, one can use the Gauss identity to inf
                                        &=& I_i \\
   \end{array}
 \end{equation}
-where $\vec{n}_i$ denotes the normal vector pointing outside of $w_i$, $I_i=\int_{w_i}j_z$ the current along $w_i$ and since $\varphi$ is zero near the interior boundary, we consider it's  exterior contribution $\varphi^{\text{ext}}$ for the . The same computation holds for $w_0$, 
+where $\vec{n}_i$ denotes the normal vector pointing outside of $w_i$, $I_i=\int_{w_i}j_z$ the current along $w_i$ and since $\varphi$ is zero near the interior boundary, we consider it's  exterior contribution $\varphi^{\text{ext}}$ for the purpose of our work. The same computation holds for $w_0$, 
 
 \begin{equation}
   \label{eq:traceeqnw0}
@@ -90,18 +90,38 @@ We first reproduce the problem in a simple case. We consider a disk-shaped mesh 
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[scale=0.25]{fig/mesh_10.pdf}
-  \includegraphics[scale=0.25]{fig/mesh_20.pdf}
-  \includegraphics[scale=0.25]{fig/mesh_40.pdf}
+  \includegraphics[scale=0.20]{fig/mesh_10.pdf}
+  \includegraphics[scale=0.20]{fig/mesh_20.pdf}
+  \includegraphics[scale=0.20]{fig/mesh_40.pdf}
   \caption{Mesh family used to compute $M$}
 \label{fig:meshfamily}
 \end{figure}
 
+The $\zeta_j$ functions are computed on the meshes from fig. \ref{fig:meshfamily}. For $i \in {1,..,N}$, $\zeta_i$ is determined by solving the following 
+
+\begin{equation}
+  \label{eq:zetapde}
+  \begin{array}{rcl}
+    -\Delta \zeta_i &=& 0 \quad \text{on }  w_0 \backslash \cup_{k=1}^N \bar{w_k}\\
+    \zeta_i &=& \delta_{ij} \quad \text{on } \partial w_j \\ 
+  \end{array}  
+\end{equation}
+
+as depicted in the figure \ref{fig:zetafamily}.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[scale=0.20]{fig/sol_0.pdf}
+  \includegraphics[scale=0.20]{fig/sol_3.pdf}
+  \includegraphics[scale=0.20]{fig/sol_5.pdf}
+  \caption{Examples of $\zeta_0,\zeta_3$ and $\zeta_5$}
+\label{fig:zetafamily}
+\end{figure}
 
 
-Since the coefficients $M_{ij}$ are computed according to a line integral, we first test the lack of symmetry versus the smallness \todo{a ameliorer} of the meshsize. The lack of symmetry is measured by estimating $|| M-M^T ||_\infty$. The following figure describe the evolution of the error when the mesh size is decreasing.
+Since the coefficients $M_{ij}$ are computed according to a line integral, we first test the lack of symmetry versus the smallness \todo{a ameliorer} of the meshsize. For this, we used the finite element interface FreeFem++ to compute the desired quantities. The vector space of discrete solutions is based on a $\mathbb{P}^1$ approximation. The line integral involved in $M_{ij}$ as been computed with the built-in FreeFem++ command \texttt{int1d(Th,i)(...)}. 
 
-
+The lack of symmetry is measured by estimating $|| M-M^T ||_\infty$. The following figure describe the evolution of the error when the mesh size is decreasing.
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}
@@ -114,17 +134,58 @@ Since the coefficients $M_{ij}$ are computed according to a line integral, we fi
       legend entries={
         Symmetry lack
       },
-      legend style={legend pos=north west}
+      legend style={legend pos=north east}
       ]
-      \addplot [cyan,thick] table [x index=0,y index=1] {dat/err.dat};
-    \end{semilogyaxis}
+      \addplot [cyan,thick] table [x index=0,y index=1] {dat/stats_M_simple_case.dat};
+      \end{semilogyaxis}
   \end{tikzpicture}
   \caption{Lack of Symmetry vs mesh size}
 \label{fig:symm}
 \end{figure}
 
 
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \pgfplotsset{width=0.95\textwidth, height=0.4\textwidth}
+    \begin{axis}[
+      ymajorgrids=true, % grid=minor pour avoir tous les traits
+      xlabel={Mesh size},
+      ylabel={cond($M$)},
+      legend entries={
+        cond(M)
+      },
+      legend style={legend pos=north east}
+      ]
+      \addplot [red,thick] table [x index=0,y index=3] {dat/stats_M_simple_case.dat};
+      \end{axis}
+  \end{tikzpicture}
+  \caption{Condition number vs mesh size}
+\label{fig:cond}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \pgfplotsset{width=0.95\textwidth, height=0.2\textwidth}
+    \begin{axis}[
+      ymajorgrids=true, % grid=minor pour avoir tous les traits
+      xlabel={Mesh size},
+      ylabel={Smallest eigenvalue},
+      legend entries={
+        $\lambda_{\text{min}}$
+      },
+      legend style={legend pos=north east}
+      ]
+      \addplot [violet,thick] table [x index=0,y index=2] {dat/stats_M_simple_case.dat};
+      \end{axis}
+  \end{tikzpicture}
+  \caption{Smallest eigenvalue vs mesh size}
+\label{fig:cond}
+\end{figure}
  
+The definite positiveness is also verified by the sign of the smallest eigen value of $M$, we gathered the datum in the following table.
+
 \subsection*{The multiple armour/cable case}
 \todo[inline]{rewrite from helluy's doc all the blabla}
 
