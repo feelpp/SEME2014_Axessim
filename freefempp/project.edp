@@ -1,83 +1,106 @@
-real rs = 2;
-real rw = 0.1;
-real ri= 0.5;
-real epsilon=8.85418782e-12;
+verbosity=0;
 
-int NWIRES=6;
+real rs = 6;
+real rw = 0.5;
 
-real Cexact=2*pi*epsilon/(log(rs/rw));
+int Nw=8;
 
 // Main wire (blindage) of radius rs
 border circleShield(t=0,2*pi){x=rs*cos(t);y=rs*sin(t);label=0;};
 
-real[int] X(6),Y(6);
-for (int k=0;k<NWIRES;k++) {
-  X(k)=cos(k*pi/3);
-  Y(k)=sin(k*pi/3);
+real[int] X(Nw),Y(Nw);
+for (int k=0;k<Nw;k++) {
+  X(k)=(rs/2)*cos(2*k*pi/Nw);
+  Y(k)=(rs/2)*sin(2*k*pi/Nw);
  }
-
-border circleWireInt(t=0,2*pi){x=ri*cos(t);y=ri*sin(t);label=7;}; 
 
 // wire 1 cetered at (-1,0) radius rw
-border circleWire1(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=1;};
-border circleWire2(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=2;};
-border circleWire3(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=3;};
-border circleWire4(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=4;};
-border circleWire5(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=5;};
-border circleWire6(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=6;};
+border circleWire1(t=0,2*pi){x=X(1)+rw*cos(t);y=Y(1)+rw*sin(t);label=1;}
+border circleWire2(t=0,2*pi){x=X(2)+rw*cos(t);y=Y(2)+rw*sin(t);label=2;}
+border circleWire3(t=0,2*pi){x=X(3)+rw*cos(t);y=Y(3)+rw*sin(t);label=3;}
+border circleWire4(t=0,2*pi){x=X(4)+rw*cos(t);y=Y(4)+rw*sin(t);label=4;}
+border circleWire5(t=0,2*pi){x=X(5)+rw*cos(t);y=Y(5)+rw*sin(t);label=5;}
+border circleWire6(t=0,2*pi){x=X(6)+rw*cos(t);y=Y(6)+rw*sin(t);label=6;}
+border circleWire7(t=0,2*pi){x=X(7)+rw*cos(t);y=Y(7)+rw*sin(t);label=7;}
+border circleWire8(t=0,2*pi){x=X(0)+rw*cos(t);y=Y(0)+rw*sin(t);label=8;}
 
-int m=5;
-mesh Th;
-// mesh=read("mesh.msh");
+{
+  int m=50;
+  //for (int m=10;m<50;m++) {
+  mesh Th;
+  // mesh=read("mesh.msh");
+  ofstream file("out/compute_"+m+".m");
+  Th=buildmesh(circleShield(10*m)
+	       +circleWire1(-2*m)
+	       +circleWire2(-2*m)
+	       +circleWire3(-2*m)
+	       +circleWire4(-2*m)
+	       +circleWire5(-2*m)
+	       +circleWire6(-2*m)
+	       +circleWire7(-2*m)
+	       +circleWire8(-2*m)
+	       );
+  //	     +circleWireInt(-5*m));
+  //plot(Th,wait=1,ps="mesh_"+m+".ps");
+  // Create function space
+  fespace Vh(Th,P1);
+  Vh PHI,v;
+  Vh[int] phi(Nw);
 
-Th=buildmesh(circleShield(10*m)
-	     +circleWire1(-5*m)
-	     +circleWire2(-5*m)
-	     +circleWire3(-5*m)
-	     +circleWire4(-5*m)
-	     +circleWire5(-5*m)
-	     +circleWire6(-5*m)
-	     +circleWireInt(-5*m));
-plot(Th,wait=1);
+  real[int] BcWire(Nw+1);
 
-// Create function space
-fespace Vh(Th,P1);
-Vh PHI,v;
-Vh[int] phi(NWIRES);
-
-real[int] BcWire(NWIRES+1);
-
-for (int k=0;k<NWIRES;k++){
-  BcWire=0;
-  BcWire(k+1)=1;
-  problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
-    +on(0,PHI=BcWire(0))
-    +on(1,PHI=BcWire(1))
-    +on(2,PHI=BcWire(2))
-    +on(3,PHI=BcWire(3))
-    +on(4,PHI=BcWire(4))
-    +on(5,PHI=BcWire(5))
-    +on(6,PHI=BcWire(6));
-  Poisson;
-  phi[k]=PHI;
-  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
- }
-
-real[int,int] M(NWIRES+1,NWIRES+1);
-M=0.;
-
-for (int k=1;k<NWIRES;k++) {
-  for (int j=0;j<NWIRES;k++) {
-    M(k,j)=int1d(Th,k)(-dx(phi[j])*N.x-dy(phi[j])*N.y);    
+  for (int k=0;k<Nw;k++){
+    BcWire=0;
+    BcWire(k+1)=1;
+    problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
+      +on(0,PHI=BcWire(0)) // blindage boundary
+      +on(1,PHI=BcWire(1))
+      +on(2,PHI=BcWire(2))
+      +on(3,PHI=BcWire(3))
+      +on(4,PHI=BcWire(4))
+      +on(5,PHI=BcWire(5))
+      +on(6,PHI=BcWire(6))
+      +on(7,PHI=BcWire(7))
+      +on(8,PHI=BcWire(8))
+      ;
+    Poisson;
+    phi[k]=PHI;
+    //plot(phi[k],wait=1,fill=1,ps="sol_"+k+".ps");
   }
- }
-
-real[int,int] MM=M(1:NWIRES,1:NWIRES);
-cout << M << endl;
-cout << MM << endl;
 
 
+  real[int,int] M(Nw,Nw);
+  real[int,int] S(Nw,Nw);
+  M=0.; S=0;
+
+  file << "S=[";
+  for (int k=0;k<Nw;k++) {
+    for (int j=0;j<Nw;j++) {
+      S(k,j)=int2d(Th)(dx(phi[j])*dx(phi[k])+dy(phi[j])*dy(phi[k]));
+      file << S(k,j) << " ";
+    }
+    file << ";";
+  }
+  file << "];" << endl;
+
+
+  file << "M=[";
+  for (int k=0;k<Nw;k++) {
+    for (int j=0;j<Nw;j++) {
+      M(k,j)=int1d(Th,k+1)(dx(phi[j])*N.x+dy(phi[j])*N.y);
+      file << M(k,j) << " ";
+    }
+    file << ";";
+  }
+  file << "];" << endl;
+
+  //file << "i=" <<m<<";s=max(max(S));m=min(eig(M));c=cond(M);printf(\"%f %f %f %f \\n\",i,s,m,c)" << endl;
+  //} // for
 // plot(phi0,wait=1,value=true);
 // plot(phi,wait=1,value=true);
 // cout<< phi0[].min <<endl;
 // cout<< phi[].min <<endl;
+  cout << "M=" << M << endl;
+  cout << "S=" << S <<endl;
+}
+//exec("gnuplot -p -e \"plot 'eig.dat' u 1:2 w l title 'lack of symmetry (sup error)' \"");
