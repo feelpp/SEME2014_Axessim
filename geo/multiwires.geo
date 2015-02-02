@@ -24,6 +24,12 @@ ll[]={};
 shieldlineid=0;
 isCircleSurfMarked=0;
 
+
+////////////////////////////////////////////////////////////////////////////////
+// FUNCTIONS TO DRAW CIRCLES
+////////////////////////////////////////////////////////////////////////////////
+
+
 //------------------------------------------------------------------------------
 // SUPERCIRCLE create a parametered circle.
 // ARGS:
@@ -92,6 +98,12 @@ Function WireFromData
     Call incCirclesInSurface;
 Return
 
+
+////////////////////////////////////////////////////////////////////////////////
+// SAMPLES
+////////////////////////////////////////////////////////////////////////////////
+
+
 //------------------------------------------------------------------------------
 // Create Nc recurrence of 3 circles
 // Rx - initial x position for the center of the 3 circles
@@ -105,8 +117,8 @@ Function WireDataTriCircle1
     Ry=0;
     dist=40;
     distfrombound=4;
-    Nc=10;
-    For j In {1:Nc}
+    Nl=10;
+    For j In {1:Nl}
         For i In {1:3}
             rad=dist/2;
             DATA+=dist*Cos(i*2*Pi/3);
@@ -128,9 +140,10 @@ Return
 // Rx - initial x position for the center of the 3 circles
 // Ry - initial y position for the center of the 3 circles
 // d  - distance from the center
+// Nc - Level of recursion of 3-circles
 //------------------------------------------------------------------------------
 Function WireDataTriCircle2
-    isCircleSurfMarked=0;
+    isCircleSurfMarked=1;
     DATA[]={};
     Rx=0;
     Ry=0;
@@ -138,8 +151,8 @@ Function WireDataTriCircle2
     dist2=30;
     distfrombound=4;
     distfrombound2=4;
-    Nc=1;
-    For j In {1:Nc}
+    Nl=1;
+    For j In {1:Nl}
         For k In {1:3}
             Rx=dist2*Cos(k*2*Pi/3);
             Ry=dist2*Sin(k*2*Pi/3);
@@ -195,17 +208,106 @@ Function WireDataTriCircle2
 Return
 
 //------------------------------------------------------------------------------
-// MAIN
+// Create Nc recurrence of 3 circles + 1 shield
+// Rx - initial x position for the center of the 3 circles
+// Ry - initial y position for the center of the 3 circles
+// d  - distance from the center
+// Nc - Level of recursion of 3-circles
 //------------------------------------------------------------------------------
-lc = 5;
+Function WireDataTriCircle3
+    isCircleSurfMarked=0;
+    DATA[]={};
+    Rx=0;
+    Ry=0;
+    Nl=1;
+
+    orbit=2;
+    rad1=1;
+    rad2=4;
+
+    For j In {1:Nl}
+//        For k In {1:3}
+//            Rx=dist2*Cos(k*2*Pi/3);
+//            Ry=dist2*Sin(k*2*Pi/3);
+
+            // Tri wires center
+            For i In {1:3}
+                DATA+=Rx+orbit*Cos(i*2*Pi/3);
+                DATA+=Ry+orbit*Sin(i*2*Pi/3);
+                DATA+=rad1;
+                DATA+=0;
+            EndFor
+
+            // Shield
+            DATA+=Rx;
+            DATA+=Ry;
+            DATA+=rad2;
+            DATA+=0;
+//        EndFor
+    EndFor
+Return
+
+
+//------------------------------------------------------------------------------
+// Create Nc recurrence of n circles per shield
+// Shield index recursive formula: s_id(n) = s_id(n-1) + (2n+2)
+// Rx - initial x position for the center of the 3 circles
+// Ry - initial y position for the center of the 3 circles
+// d  - distance from the center
+// Nl - Level of recursion of 3-circles
+//------------------------------------------------------------------------------
+Function WireDataNCircle
+    isCircleSurfMarked=0;
+    DATA[]={};
+    Nl=2;
+    Rx=0;
+    Ry=0;
+    rad1=0.5;
+    rad2=2;
+    orbit=1;
+//    Nc=3;
+
+    dist=orbit;
+    r1=rad1;
+    r2=rad2;
+    For j In {1:Nl}
+            // Tri wires center
+            Nc=2*j+1;
+            For i In {1:Nc}
+                DATA+=Rx+dist*Cos(i*2*Pi/Nc);
+                DATA+=Ry+dist*Sin(i*2*Pi/Nc);
+                DATA+=r1;
+                DATA+=0;
+            EndFor
+
+            // Shield
+            DATA+=Rx;
+            DATA+=Ry;
+            DATA+=r2;
+            DATA+=0;
+
+            dist+=2*orbit;
+            r2+=rad2;
+    EndFor
+Return
+
+////////////////////////////////////////////////////////////////////////////////
+// MAIN PROGRAM
+////////////////////////////////////////////////////////////////////////////////
+
+
+lc = 0.3;
 
 isCircleSurfMarked=1;
 
 // Load data from a file
 //Include "multiwires2.dat";
-//Call WireDataTriCircle1;
 
+// Load samples
 //Call WireDataTriCircle1;
-Call WireDataTriCircle2;
+//Call WireDataTriCircle2;
+//Call WireDataTriCircle3;
+Call WireDataNCircle;
 
+// Draw the geometry
 Call WireFromData;
