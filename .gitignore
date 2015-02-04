@@ -55,9 +55,10 @@
 *.nav
 *.snm
 *.vrb
-*.pdf
 *.ps
 *.jpg
 *.png
 *.ps
 *.eps
+*.spl
+**/tmp
