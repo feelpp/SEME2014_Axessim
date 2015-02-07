@@ -72,5 +72,5 @@ See also:
 # Mailing lists
 
 Just send an empty email to
-- [Subscribe](seme2014_axessim-commits+subscribe@googlegroups.com) /  [Unsubscribe](seme2014_axessim-commits+unsubscribe@googlegroups.com) to the commit list 
+- [Subscribe](mailto:seme2014_axessim-commits+subscribe@googlegroups.com) / [Unsubscribe](mailto:seme2014_axessim-commits+unsubscribe@googlegroups.com) to the commit list 
 
