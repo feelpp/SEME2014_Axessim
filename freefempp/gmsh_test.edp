@@ -3,7 +3,7 @@ load "gmsh"
 int NWIRES=10;
 
 mesh Th = gmshload("../mesh/multiwires.msh");
-//plot(Th,wait=1);
+plot(Th,wait=1);
 
 // Create function space
 fespace Vh(Th,P1);
@@ -24,8 +24,8 @@ for (int k=0;k<NWIRES;k++)
   }
 
   problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
-                                    + on( cas1, PHI=1)
-                                    + on (cas0, PHI=0);
+                                    + on( cas1, PHI=1 )
+                                    + on( cas0, PHI=0 );
   Poisson;
 
   phi[k]=PHI;
