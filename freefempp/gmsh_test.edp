@@ -1,5 +1,10 @@
+// This code shows how to use a GMSH mesh with N inclusions
+// and setting the boundary condition for the N inclusions
+// dynamically.
+
 load "gmsh"
 
+// number of wires (without shield level 0)
 int NWIRES=10;
 
 mesh Th = gmshload("../mesh/multiwires.msh");
@@ -14,7 +19,7 @@ real[int] BcWire(NWIRES+1);
 for (int k=0;k<NWIRES;k++)
 {
   // Create a vector of wire index
-  int[int] cas0(NWIRES-1);
+  int[int] cas0(NWIRES);
   int cas1;
   int count=0;
   for (int j=0;j<NWIRES;j++)
@@ -29,5 +34,5 @@ for (int k=0;k<NWIRES;k++)
   Poisson;
 
   phi[k]=PHI;
-  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
+  plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k,ps="figs/gmsh_test_2Dview-"+k+".ps");
  }
