@@ -3,30 +3,31 @@ load "gmsh"
 int NWIRES=10;
 
 mesh Th = gmshload("../mesh/multiwires.msh");
-
-plot(Th,wait=1);
+//plot(Th,wait=1);
 
 // Create function space
 fespace Vh(Th,P1);
 Vh PHI,v;
 Vh[int] phi(NWIRES);
-
 real[int] BcWire(NWIRES+1);
 
-for (int k=0;k<NWIRES;k++){
-  BcWire=0;
-  BcWire(k+1)=1;
+for (int k=0;k<NWIRES;k++)
+{
+  // Create a vector of wire index
+  int[int] cas0(NWIRES-1);
+  int cas1;
+  int count=0;
+  for (int j=0;j<NWIRES;j++)
+  {
+    if(j==k+1) { cas1=j; }
+    else { cas0(count)=j; count++; }
+  }
+
   problem Poisson(PHI,v) = int2d(Th)(dx(PHI)*(dx(v))+dy(PHI)*(dy(v)))
-                        +on(1,PHI=BcWire(1))
-                        +on(2,PHI=BcWire(2))
-                        +on(3,PHI=BcWire(3))
-                        +on(4,PHI=BcWire(4))
-                        +on(5,PHI=BcWire(5))
-                        +on(6,PHI=BcWire(6))
-                        +on(7,PHI=BcWire(7))
-                        +on(8,PHI=BcWire(8))
-                        +on(9,PHI=BcWire(9));
+                                    + on( cas1, PHI=1)
+                                    + on (cas0, PHI=0);
   Poisson;
+
   phi[k]=PHI;
   plot(phi[k],wait=1,value=1,fill=1,cmm="solution k="+k);
  }
