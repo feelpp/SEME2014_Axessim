@@ -1,13 +1,24 @@
+////////////////////////////////////////////////////////////////
+//
+// Author(s) G. Dollé <gdolle at unistra.fr>
+//
 // This code shows how to use a GMSH mesh with N inclusions
-// and setting the boundary condition for the N inclusions
+// and setting the boundary condition (bc) for the N inclusions
 // dynamically.
+//
+// This example works with the given multiwires mesh
+//  - multiwires2.msh   // N=10
+//  - multiwires10.msh  // N=130
+//
+////////////////////////////////////////////////////////////////
 
 load "gmsh"
 
 // number of wires (without shield level 0)
-int NWIRES=10;
+int NWIRES=130;
 
-mesh Th = gmshload("../mesh/multiwires.msh");
+//mesh Th = gmshload("../mesh/multiwires2.msh");
+mesh Th = gmshload("../mesh/multiwires10.msh");
 plot(Th,wait=1);
 
 // Create function space
@@ -18,7 +29,7 @@ real[int] BcWire(NWIRES+1);
 
 for (int k=0;k<NWIRES;k++)
 {
-  // Create a vector of wire index
+  // Create a vector of wire indexes
   int[int] cas0(NWIRES);
   int cas1;
   int count=0;
