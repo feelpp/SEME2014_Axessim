@@ -15,7 +15,7 @@
 load "gmsh"
 
 // number of wires (without shield level 0)
-int NWIRES=10;
+int NWIRES=130;
 
 //mesh Th = gmshload("../mesh/multiwires2.msh");
 mesh Th = gmshload("../mesh/multiwires10.msh");
