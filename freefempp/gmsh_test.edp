@@ -7,15 +7,15 @@
 // dynamically.
 //
 // This example works with the given multiwires mesh
-//  - multiwires2.msh   // N=10
-//  - multiwires10.msh  // N=130
-//
+//  - multiwires2.msh   // N=10, shield label 11
+//  - multiwires10.msh  // N=130, shield label 131
+// Last label is the shield
 ////////////////////////////////////////////////////////////////
 
 load "gmsh"
 
 // number of wires (without shield level 0)
-int NWIRES=10;
+int NWIRES=130;
 
 //mesh Th = gmshload("../mesh/multiwires2.msh");
 mesh Th = gmshload("../mesh/multiwires10.msh");
