@@ -1,14 +1,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // SEME Strasbourg 2014 - Axessim project
-// (c) 2014 University of Strasbourg
 // Author(s): - J. Aghili <aghili at univ-montp2.fr>
 //            - G. Dollé <gdolle at unistra.fr>
 //            - A. Samaké <samake at math.unistra.fr>
 //            - N. Pham <tnhung.pham at gmail.com>
-// Repository `https://github.com/gdolle/SEME2014_Axessim`
+// Copyright (C) 2014 University of Strasbourg
 //
-// This gmsh version is specific to 'CallWriteNCircle', see multiwire.geo !!
+// See more information at `https://github.com/gdolle/SEME2014_Axessim`
+//
+// NOTE:
+//
+// This gmsh version is specific to 'CallWriteNCircle', `see multiwire.geo`!
+// For the shield level n, the recursive formula to compute the number of
+// internal wires including internal shield is (excluding external shield)
+// * Nw(i) = Nw(i-1) + 2*n+2, N(1)=3 .
+// * Mesh are providen for Ns=2,5,10.
+// * All generated data are in ./work/ directory
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -17,19 +25,26 @@ load "gmsh"
 macro Grad(u) [dx(u),dy(u)] //EOM
 
 // Number of internal shield.
-int Ns=10;
+int Ns=5;
 
-// Compute the number of internal wires and shields Nn = Nn-1 + 2*n+2, N1=3.
-// without the external shield.
-int N1=3;
+// Compute the number of internal wires and shields without the external shield.
+int N1=2;
 for(int i=2;i<=Ns;i++)
-    N1+=2*i+2;
-
+  N1+=2*i+2;
 int Nw=N1;
 
-cout << "----------------------------\n";
-cout << "Number of internal shield = " << Ns << "\n";
+// Create a vector with the shield labels/indexes
+int[int] shieldlabels(Ns+1);
+shieldlabels[0]=4;
+for(int i=2;i<=Ns;i++)
+  shieldlabels[i-1] = shieldlabels[i-2] + 2*i+3;
+shieldlabels[Ns]=Nw+1;
+
+cout << "------------------------------------------\n";
 cout << "Number of internal wires + shields = " << Nw << "\n";
+cout << "Number of internal shield = " << Ns << "\n";
+cout << "Shields labels: " << shieldlabels << " \n";
+cout << "------------------------------------------\n";
 
 int[int] label0(Nw); // Vector of wire indexes for dirichlet condition = 0.
 int label1; // Index for the wire to put the dirichlet condition = 1.
@@ -96,10 +111,9 @@ for (int k=0;k<Nw;k++) {
 }
 file << "];" << endl;
 
-cout << "M=" << M << endl;
-cout << "S=" << S <<endl;
+//cout << "M=" << M << endl;
+//cout << "S=" << S <<endl;
 
 //L= M^-1;
 //cout << "L=" << L <<endl;
-cout << "----------------------------\n";
 
