@@ -23,6 +23,20 @@ maxr=0;
 ll[]={};
 shieldlineid=0;
 isCircleSurfMarked=0;
+Rx=0;
+Ry=0;
+
+Nl=2;
+rad1=0.5;
+rad2=2;
+orbit=1;
+pattern=1;
+
+Nl = DefineNumber[ Nl, Name "Parameter/Level number"];
+rad1 = DefineNumber[ rad1, Name "Parameter/Radius 1"];
+rad2 = DefineNumber[ rad2, Name "Parameter/Radius 2"];
+orbit = DefineNumber[ orbit, Name "Parameter/Orbit"];
+pattern = DefineNumber[ pattern, Name "Parameter/Pattern"];
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,8 +127,6 @@ Return
 Function WireDataTriCircle1
     isCircleSurfMarked=0;
     DATA[]={};
-    Rx=0;
-    Ry=0;
     dist=40;
     distfrombound=4;
     Nl=10;
@@ -145,13 +157,10 @@ Return
 Function WireDataTriCircle2
     isCircleSurfMarked=1;
     DATA[]={};
-    Rx=0;
-    Ry=0;
     dist=10;
     dist2=30;
     distfrombound=4;
     distfrombound2=4;
-    Nl=1;
     For j In {1:Nl}
         For k In {1:3}
             Rx=dist2*Cos(k*2*Pi/3);
@@ -217,13 +226,6 @@ Return
 Function WireDataTriCircle3
     isCircleSurfMarked=0;
     DATA[]={};
-    Rx=0;
-    Ry=0;
-    Nl=1;
-
-    orbit=2;
-    rad1=1;
-    rad2=4;
 
     For j In {1:Nl}
 //        For k In {1:3}
@@ -259,14 +261,6 @@ Return
 Function WireDataNCircle
     isCircleSurfMarked=0;
     DATA[]={};
-    Nl=2;
-    Rx=0;
-    Ry=0;
-    rad1=0.5;
-    rad2=2;
-    orbit=1;
-//    Nc=3;
-
     dist=orbit;
     r1=rad1;
     r2=rad2;
@@ -307,7 +301,17 @@ isCircleSurfMarked=1;
 //Call WireDataTriCircle1;
 //Call WireDataTriCircle2;
 //Call WireDataTriCircle3;
-Call WireDataNCircle;
+If(pattern == 1)
+    Call WireDataNCircle;
+    // Draw the geometry
+    Call WireFromData;
+EndIf
+If(pattern == 2)
+    Call WireDataTriCircle2;
+    // Draw the geometry
+    Call WireFromData;
+EndIf
+If(pattern >= 2)
+    Error("wrong pattern number");
+EndIf
 
-// Draw the geometry
-Call WireFromData;
